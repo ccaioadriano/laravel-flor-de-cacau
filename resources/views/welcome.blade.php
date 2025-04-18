@@ -68,50 +68,56 @@
     <!-- Produtos -->
     <section id="produtos" class="container mx-auto px-6 py-16">
         <h2 class="text-3xl font-bold text-center text-[#143151] mb-12">Nossos Produtos</h2>
+
+        {{-- <!-- Filtro Simples -->
+        <div class="mb-8 flex justify-center">
+            <div class="inline-flex rounded-md shadow-sm" role="group">
+                <button type="button"
+                    class="filter-btn active px-4 py-2 text-sm font-medium bg-[#143151] text-white rounded-l-lg hover:bg-[#0c1f33]"
+                    data-filter="all">
+                    Todos
+                </button>
+                <button type="button"
+                    class="filter-btn px-4 py-2 text-sm font-medium bg-gray-200 text-gray-700 hover:bg-gray-300"
+                    data-filter="brigadeiros">
+                    Brigadeiros
+                </button>
+                <button type="button"
+                    class="filter-btn px-4 py-2 text-sm font-medium bg-gray-200 text-gray-700 hover:bg-gray-300"
+                    data-filter="bolos">
+                    Bolos
+                </button>
+                <button type="button"
+                    class="filter-btn px-4 py-2 text-sm font-medium bg-gray-200 text-gray-700 rounded-r-lg hover:bg-gray-300"
+                    data-filter="trufas">
+                    Trufas
+                </button>
+            </div>
+        </div> --}}
+
+        <!-- Produtos -->
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            <!-- Produto 1 -->
-            <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-all duration-300">
-                <div class="p-6">
-                    <h3 class="text-xl font-semibold text-[#143151] mb-2">Brigadeiros personalizados</h3>
-                    <img src="{{ asset('img/brigadeiros.png') }}" alt="Brigadeiros Gourmet"
-                        class="w-full h-48 object-cover mb-4 rounded-md">
-                    <p class="text-[#143151] font-bold mt-4">R$ 5,00/unidade</p>
-                    <button
-                        onclick="addToCart('Brigadeiros personalizados', 5.00, '{{ asset('img/brigadeiros.png') }}')"
-                        class="mt-4 bg-[#143151] text-white px-4 py-2 rounded-md hover:bg-[#0c1f33] transition-all duration-300 w-full">
-                        Adicionar ao carrinho
-                    </button>
+            @foreach ($products as $product)
+                <div class="product-card bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-all duration-300"
+                    data-category="{{ $product->category ?? 'outros' }}">
+                    <div class="p-6">
+                        <h3 class="text-xl font-semibold text-[#143151] mb-2">{{ $product->title }}</h3>
+                        <img src="{{ $product->image ?? asset('storage/brigadeiros.png') }}" alt="{{ $product->title }}"
+                            class="w-full h-48 object-cover mb-4 rounded-md">
+                        <p class="text-[#143151] font-bold mt-4">R$ {{ number_format($product->price / 100, 2, ',', '.') }}
+                        </p>
+                        <button
+                            onclick="addToCart('{{ $product->title }}', {{ $product->price / 100 }}, '{{ $product->image ?? asset('storage/brigadeiros.png') }}')"
+                            class="mt-4 bg-[#143151] text-white px-4 py-2 rounded-md hover:bg-[#0c1f33] transition-all duration-300 w-full">
+                            Adicionar ao carrinho
+                        </button>
+                    </div>
                 </div>
-            </div>
-
-            <!-- Produto 2 -->
-            <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-all duration-300">
-                <div class="p-6">
-                    <h3 class="text-xl font-semibold text-[#143151] mb-2">Kit degustação com 6 unidades</h3>
-                    <img src="{{ asset('img/ovos_de_pascoa.png') }}" alt="Kit degustação"
-                        class="w-full h-48 object-cover mb-4 rounded-md">
-                    <p class="text-[#143151] font-bold mt-4">R$ 7,00/unidade</p>
-                    <button
-                        onclick="addToCart('Kit degustação com 6 unidades', 7.00, '{{ asset('img/ovos_de_pascoa.png') }}')"
-                        class="mt-4 bg-[#143151] text-white px-4 py-2 rounded-md hover:bg-[#0c1f33] transition-all duration-300 w-full">
-                        Adicionar ao carrinho
-                    </button>
-                </div>
-            </div>
-
-            <!-- Produto 3 -->
-            <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-all duration-300">
-                <div class="p-6">
-                    <h3 class="text-xl font-semibold text-[#143151] mb-2">Bolos no Pote</h3>
-                    <img src="{{ asset('img/brigadeiros.png') }}" alt="Bolos no Pote"
-                        class="w-full h-48 object-cover mb-4 rounded-md">
-                    <p class="text-[#143151] font-bold mt-4">R$ 15,00/unidade</p>
-                    <button onclick="addToCart('Bolos no Pote', 15.00, '{{ asset('img/brigadeiros.png') }}')"
-                        class="mt-4 bg-[#143151] text-white px-4 py-2 rounded-md hover:bg-[#0c1f33] transition-all duration-300 w-full">
-                        Adicionar ao carrinho
-                    </button>
-                </div>
-            </div>
+            @endforeach
+        </div>
+        <!-- Paginação -->
+        <div class="mt-12">
+            {{ $products->links() }}
         </div>
     </section>
 
@@ -153,6 +159,11 @@
                         <span id="cart-total" class="font-semibold text-[#143151]">R$ 0,00</span>
                     </div>
 
+
+                    <div class="flex gap-2 mb-3" id="clearCartButton">
+                        <!-- Botão Esvaziar Carrinho -->
+                    </div>
+
                     <button id="checkout-button" onclick="checkout()"
                         class="w-full bg-[#143151] text-white py-3 rounded-md hover:bg-[#0c1f33] transition-all duration-300">
                         Finalizar Pedido
@@ -191,11 +202,17 @@
     <script>
         // Inicialização do carrinho
         let cart = [];
+        const clearCartButton = document.getElementById('clearCartButton');
+
+        function clearCart() {
+            cart = [];
+            updateCart();
+        }
 
         // Função para adicionar produto ao carrinho
-        function addToCart(name, price, image) {
+        function addToCart(title, price, image) {
             // Verificar se o produto já está no carrinho
-            const existingItem = cart.find(item => item.name === name);
+            const existingItem = cart.find(item => item.title === title);
 
             if (existingItem) {
                 // Se já existe, aumenta a quantidade
@@ -203,7 +220,7 @@
             } else {
                 // Se não existe, adiciona ao carrinho
                 cart.push({
-                    name: name,
+                    title: title,
                     price: price,
                     image: image,
                     quantity: 1
@@ -225,6 +242,7 @@
 
         // Função para atualizar a exibição do carrinho
         function updateCart() {
+            verifyEmptyButton()
             const cartCount = document.getElementById('cart-count');
             const cartItems = document.getElementById('cart-items');
             const cartTotal = document.getElementById('cart-total');
@@ -244,9 +262,9 @@
                     itemElement.className = 'flex items-center justify-between py-3 border-b';
                     itemElement.innerHTML = `
                         <div class="flex items-center">
-                            <img src="${item.image}" alt="${item.name}" class="w-12 h-12 object-cover rounded-md">
+                            <img src="${item.image}" alt="${item.title}" class="w-12 h-12 object-cover rounded-md">
                             <div class="ml-3">
-                                <div class="text-sm font-medium text-gray-900">${item.name}</div>
+                                <div class="text-sm font-medium text-gray-900">${item.title}</div>
                                 <div class="text-sm text-gray-500">R$ ${item.price.toFixed(2)} x ${item.quantity}</div>
                             </div>
                         </div>
@@ -279,7 +297,7 @@
             let message = 'Olá! Gostaria de fazer o seguinte pedido:\n\n';
 
             cart.forEach(item => {
-                message += `${item.quantity}x ${item.name} - R$ ${(item.price * item.quantity).toFixed(2)}\n`;
+                message += `${item.quantity}x ${item.title} - R$ ${(item.price * item.quantity).toFixed(2)}\n`;
             });
 
             const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
@@ -292,15 +310,27 @@
             window.open(`https://wa.me/31994409981?text=${encodedMessage}`, '_blank');
 
             // Limpa o carrinho após finalizar o pedido
-            cart = [];
-            updateCart();
-            closeCartModal();
+            clearCart()
         }
 
         // Funções para abrir e fechar o modal do carrinho
         function openCartModal() {
             document.getElementById('cart-modal').classList.remove('hidden');
             document.body.style.overflow = 'hidden'; // Impede rolagem da página
+            verifyEmptyButton()
+        }
+
+        function verifyEmptyButton() {
+            if (cart.length !== 0) {
+                clearCartButton.innerHTML = `
+                <button id="empty-cart-button" onclick="clearCart()"
+                        class="w-full bg-red-500 text-white py-3 rounded-md hover:bg-red-600 transition-all duration-300 flex items-center justify-center">
+                        <i class="fas fa-trash-alt mr-2"></i> Esvaziar Carrinho
+                    </button>
+                `;
+            } else {
+                clearCartButton.innerHTML = '';
+            }
         }
 
         function closeCartModal() {
