@@ -11,6 +11,6 @@ class ProductController extends Controller
 
         $products = Product::select(['title', 'description', 'price', 'image'])->paginate(9);
 
-        return view('welcome', ['products'=> $products]);
+        return view('welcome', compact('products'));
     }
 }
