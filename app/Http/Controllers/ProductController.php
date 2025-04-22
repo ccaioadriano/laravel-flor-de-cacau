@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Services\ProductService;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Cache;
 
 class ProductController extends Controller
 {
@@ -21,7 +20,9 @@ class ProductController extends Controller
 
         $page = $request->get('page', 1);
 
-        $products = $this->productService->getProducts($page);
+        $filter = $request->get('category', 'all');
+
+        $products = $this->productService->getProducts($page, $filter);
 
         return view('welcome', compact('products'));
     }

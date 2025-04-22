@@ -17,35 +17,31 @@
     <section id="produtos" class="container mx-auto px-6 py-16">
         <h2 class="text-3xl font-bold text-center text-[#143151] mb-12">Nossos Produtos</h2>
 
-        {{-- <!-- Filtro Simples -->
         <div class="mb-8 flex justify-center">
             <div class="inline-flex rounded-md shadow-sm" role="group">
-                <button type="button"
-                    class="filter-btn active px-4 py-2 text-sm font-medium bg-[#143151] text-white rounded-l-lg hover:bg-[#0c1f33]"
-                    data-filter="all">
+                <a href="{{ route('home', ['category' => 'all']) }}"
+                    class="filter-btn px-4 py-2 text-sm font-medium {{ (request()->category === 'all') || !request()->category ? 'bg-[#143151] text-white' : 'bg-gray-200 text-gray-700  hover:bg-gray-300' }} rounded">
                     Todos
-                </button>
-                <button type="button"
-                    class="filter-btn px-4 py-2 text-sm font-medium bg-gray-200 text-gray-700 hover:bg-gray-300"
-                    data-filter="brigadeiros">
+                </a>
+
+                <a href="{{ route('home', ['category' => 'brigadeiros']) }}"
+                    class="filter-btn px-4 py-2 text-sm font-medium {{ (request()->category === 'brigadeiros') ? 'bg-[#143151] text-white' : 'bg-gray-200 text-gray-700  hover:bg-gray-300' }} rounded">
                     Brigadeiros
-                </button>
-                <button type="button"
-                    class="filter-btn px-4 py-2 text-sm font-medium bg-gray-200 text-gray-700 hover:bg-gray-300"
-                    data-filter="bolos">
+                </a>
+                <a href="{{ route('home', ['category' => 'bolos']) }}"
+                    class="filter-btn px-4 py-2 text-sm font-medium {{ (request()->category === 'bolos') ? 'bg-[#143151] text-white' : 'bg-gray-200 text-gray-700  hover:bg-gray-300' }} rounded">
                     Bolos
-                </button>
-                <button type="button"
-                    class="filter-btn px-4 py-2 text-sm font-medium bg-gray-200 text-gray-700 rounded-r-lg hover:bg-gray-300"
-                    data-filter="trufas">
+                </a>
+                <a href="{{ route('home', ['category' => 'trufas']) }}"
+                    class="filter-btn px-4 py-2 text-sm font-medium {{ (request()->category === 'trufas') ? 'bg-[#143151] text-white' : 'bg-gray-200 text-gray-700  hover:bg-gray-300' }} rounded">
                     Trufas
-                </button>
+                </a>
             </div>
-        </div> --}}
+        </div>
 
         <!-- Produtos -->
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            @foreach ($products as $product)
+            @forelse ($products as $product)
                 <article
                     class="product-card bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-all duration-300">
                     <div class="p-6">
@@ -61,17 +57,19 @@
                                 class="w-20 border border-gray-300 rounded px-2 py-1 text-center focus:outline-none focus:ring-2 focus:ring-[#143151]">
                         </div>
                         <button onclick="addToCart(
-                                    '{{ $product->title }}',
-                                    {{ $product->price / 100 }},
-                                    '{{ $product->image ?? asset('storage/brigadeiros.png') }}',
-                                    document.getElementById('qty-{{ $product->id }}').value
-                                )"
+                                                                                                    '{{ $product->title }}',
+                                                                                                    {{ $product->price / 100 }},
+                                                                                                    '{{ $product->image ?? asset('storage/brigadeiros.png') }}',
+                                                                                                    document.getElementById('qty-{{ $product->id }}').value
+                                                                                                )"
                             class="mt-2 bg-[#143151] text-white px-4 py-2 rounded-md hover:bg-[#0c1f33] transition-all duration-300 w-full">
                             Adicionar ao carrinho
                         </button>
                     </div>
                 </article>
-            @endforeach
+            @empty
+                <p class="text-gray-500">Nenhum produto encontrado.</p>
+            @endforelse
         </div>
         <!-- Paginação -->
         <div class="mt-12">

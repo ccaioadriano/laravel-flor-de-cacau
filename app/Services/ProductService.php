@@ -9,20 +9,19 @@ class ProductService
 {
 
     private const PER_PAGE = 9;
-    private const CACHE_DURATION = 60;
 
-
-    public static function getProducts($page)
+    public static function getProducts($page, $filter)
     {
-        try {
-            // Gera chave única do cache
-            $cacheKey = "products:page:{$page}:" . now()->format('Y-m-d');
 
-            $products = Cache::remember($cacheKey, self::CACHE_DURATION, fn() => 
-                Product::select(['id', 'title', 'description', 'price', 'image'])
-                    ->latest()
-                    ->paginate(self::PER_PAGE)
-            );
+        try {
+
+            $query = Product::query();
+
+            if ($filter !== 'all') {
+                $query->where('category', $filter)->paginate(self::PER_PAGE);
+            }
+
+            $products = $query->paginate(self::PER_PAGE);
 
             return $products;
 
