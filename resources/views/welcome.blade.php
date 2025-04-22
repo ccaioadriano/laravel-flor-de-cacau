@@ -46,21 +46,31 @@
         <!-- Produtos -->
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             @foreach ($products as $product)
-                <div class="product-card bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-all duration-300"
-                    data-category="{{ $product->category ?? 'outros' }}">
+                <article
+                    class="product-card bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-all duration-300">
                     <div class="p-6">
                         <h3 class="text-xl font-semibold text-[#143151] mb-2">{{ $product->title }}</h3>
                         <img src="{{ $product->image ?? asset('storage/brigadeiros.png') }}" alt="{{ $product->title }}"
                             class="w-full h-48 object-cover mb-4 rounded-md">
-                        <p class="text-[#143151] font-bold mt-4">R$ {{ number_format($product->price / 100, 2, ',', '.') }}
+                        <p class="text-[#143151] font-bold mt-4">
+                            R$ {{ number_format($product->price / 100, 2, ',', '.') }}
                         </p>
-                        <button
-                            onclick="addToCart('{{ $product->title }}', {{ $product->price / 100 }}, '{{ $product->image ?? asset('storage/brigadeiros.png') }}')"
-                            class="mt-4 bg-[#143151] text-white px-4 py-2 rounded-md hover:bg-[#0c1f33] transition-all duration-300 w-full">
+                        <div class="flex items-center mt-4 mb-2">
+                            <label for="qty-{{ $product->id }}" class="mr-2 text-[#143151] font-medium">Quantidade:</label>
+                            <input id="qty-{{ $product->id }}" type="number" min="1" value="1"
+                                class="w-20 border border-gray-300 rounded px-2 py-1 text-center focus:outline-none focus:ring-2 focus:ring-[#143151]">
+                        </div>
+                        <button onclick="addToCart(
+                                    '{{ $product->title }}',
+                                    {{ $product->price / 100 }},
+                                    '{{ $product->image ?? asset('storage/brigadeiros.png') }}',
+                                    document.getElementById('qty-{{ $product->id }}').value
+                                )"
+                            class="mt-2 bg-[#143151] text-white px-4 py-2 rounded-md hover:bg-[#0c1f33] transition-all duration-300 w-full">
                             Adicionar ao carrinho
                         </button>
                     </div>
-                </div>
+                </article>
             @endforeach
         </div>
         <!-- Paginação -->

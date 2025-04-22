@@ -10,20 +10,20 @@ function clearCart() {
 }
 
 // Função para adicionar produto ao carrinho
-function addToCart(title, price, image) {
+function addToCart(title, price, image, qtd) {
     // Verificar se o produto já está no carrinho
     const existingItem = cart.find((item) => item.title === title);
 
+    qtd = parseInt(qtd);
     if (existingItem) {
-        // Se já existe, aumenta a quantidade
-        existingItem.quantity += 1;
+        existingItem.quantity += qtd;
     } else {
         // Se não existe, adiciona ao carrinho
         cart.push({
             title: title,
             price: price,
             image: image,
-            quantity: 1,
+            quantity: parseInt(qtd),
         });
     }
 
@@ -48,8 +48,8 @@ function updateCart() {
     const cartTotal = document.getElementById("cart-total");
 
     // Atualiza o contador
-    const totalItems = cart.reduce((total, item) => total + item.quantity, 0);
-    cartCount.textContent = totalItems;
+    const totalItems = cart.reduce((total, item) => total + parseInt(item.quantity), 0);
+    cartCount.innerHTML = totalItems;
 
     // Atualiza os itens do carrinho
     if (cart.length === 0) {
@@ -63,35 +63,31 @@ function updateCart() {
             itemElement.className =
                 "flex items-center justify-between py-3 border-b";
             itemElement.innerHTML = `
-                    <div class="flex items-center">
-                        <img src="${item.image}" alt="${
-                item.title
-            }" class="w-12 h-12 object-cover rounded-md">
-                        <div class="ml-3">
-                            <div class="text-sm font-medium text-gray-900">${
-                                item.title
-                            }</div>
-                            <div class="text-sm text-gray-500">R$ ${item.price.toFixed(
-                                2
-                            )} x ${item.quantity}</div>
+                <div class="flex items-center">
+                    <img src="${item.image}" alt="${item.title}" class="w-12 h-12 object-cover rounded-md">
+                    <div class="ml-3">
+                        <div class="text-sm font-medium text-gray-900">${item.title}</div>
+                        <div class="text-sm text-gray-500">
+                            ${Utils.formatCurrency(item.price)} x ${parseInt(item.quantity)}
                         </div>
                     </div>
-                    <div class="flex items-center">
-                        <button onclick="removeFromCart(${index})" class="text-gray-500 hover:text-red-500">
-                            <i class="fas fa-trash-alt"></i>
-                        </button>
-                    </div>
-                `;
+                </div>
+                <div class="flex items-center">
+                    <button onclick="removeFromCart(${index})" class="text-gray-500 hover:text-red-500">
+                        <i class="fas fa-trash-alt"></i>
+                    </button>
+                </div>
+            `;
             cartItems.appendChild(itemElement);
         });
     }
 
     // Atualiza o total
     const total = cart.reduce(
-        (sum, item) => sum + item.price * item.quantity,
+        (sum, item) => sum + item.price * parseInt(item.quantity),
         0
     );
-    cartTotal.textContent = Utils.formatCurrency(total)
+    cartTotal.textContent = Utils.formatCurrency(total);
 
     // Salva o carrinho no localStorage
     localStorage.setItem("cart", JSON.stringify(cart));
