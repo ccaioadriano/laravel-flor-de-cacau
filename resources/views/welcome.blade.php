@@ -73,7 +73,7 @@
         </div>
         <!-- Paginação -->
         <div class="mt-12">
-            {{ $products->links() }}
+            {{ $products->withQueryString()->links() }}
         </div>
     </section>
 

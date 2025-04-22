@@ -17,12 +17,9 @@ class ProductController extends Controller
 
     public function index(Request $request)
     {
-
-        $page = $request->get('page', 1);
-
         $filter = $request->get('category', 'all');
 
-        $products = $this->productService->getProducts($page, $filter);
+        $products = $this->productService->getProducts( $filter);
 
         return view('welcome', compact('products'));
     }

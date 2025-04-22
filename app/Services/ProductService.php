@@ -10,7 +10,7 @@ class ProductService
 
     private const PER_PAGE = 9;
 
-    public static function getProducts($page, $filter)
+    public static function getProducts($filter)
     {
 
         try {
