@@ -4,6 +4,12 @@ const Utils = {
             style: "currency",
             currency: "BRL",
         }).format(value);
+    },
+
+    sendMessageWhatsapp: (message, number) => {
+        const encodedMessage = encodeURIComponent(message? message : "Olá Gostaria de fazer um pedido.");
+
+        window.open(`https://wa.me/${number}?text=${encodedMessage}`, "_blank");
     }
 }
 

@@ -119,16 +119,18 @@
         <!-- Seção de Contato Rápido -->
         <section class="text-center mt-16">
             <h2 class="text-2xl font-semibold mb-4 text-[#143151]">Quer experimentar nossas delícias?</h2>
-            <a href="/contato"
+            <button onclick="Utils.sendMessageWhatsapp(null,'31994409981')"
                 class="inline-block bg-[#143151] text-white px-8 py-3 rounded-full hover:bg-[#0f243c] transition-colors duration-300 transform hover:scale-105"
                 rel="nofollow" aria-label="Clique para entrar em contato conosco">
                 Entre em Contato
-            </a>
+        </button>
         </section>
     </div>
 @endsection
 
 @push('script')
+
+    <script src="{{ asset('js/utils.js') }}" defer></script>
     <!-- Microdata estruturado adicional -->
     <script type="application/ld+json">
         {

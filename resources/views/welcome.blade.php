@@ -57,11 +57,11 @@
                                 class="w-20 border border-gray-300 rounded px-2 py-1 text-center focus:outline-none focus:ring-2 focus:ring-[#143151]">
                         </div>
                         <button onclick="addToCart(
-                                                                                                    '{{ $product->title }}',
-                                                                                                    {{ $product->price / 100 }},
-                                                                                                    '{{ $product->image ?? asset('storage/brigadeiros.png') }}',
-                                                                                                    document.getElementById('qty-{{ $product->id }}').value
-                                                                                                )"
+                                                                                                                    '{{ $product->title }}',
+                                                                                                                    {{ $product->price / 100 }},
+                                                                                                                    '{{ $product->image ?? asset('storage/brigadeiros.png') }}',
+                                                                                                                    document.getElementById('qty-{{ $product->id }}').value
+                                                                                                                )"
                             class="mt-2 bg-[#143151] text-white px-4 py-2 rounded-md hover:bg-[#0c1f33] transition-all duration-300 w-full">
                             Adicionar ao carrinho
                         </button>
@@ -78,10 +78,10 @@
     </section>
 
     <!-- Botão flutuante do WhatsApp -->
-    <a href="https://wa.me/31994409981" target="_blank"
+    <button onclick="Utils.sendMessageWhatsapp(null,'31994409981')" target="_blank"
         class="fixed bottom-[10%] right-6 bg-green-500 text-white w-14 h-14 flex items-center justify-center rounded-full shadow-lg hover:bg-green-600 hover:scale-110 transition-all duration-300 z-50">
         <i class="fab fa-whatsapp text-3xl"></i>
-    </a>
+    </button>
 
     <!--Carrinho -->
     <button id="cart-button"
@@ -129,3 +129,8 @@
         </div>
     </div>
 @endsection
+
+@push('script')
+    <script src="{{ asset('js/utils.js') }}" defer></script>
+    <script src="{{ asset('js/scripts.js') }}" defer></script>
+@endpush

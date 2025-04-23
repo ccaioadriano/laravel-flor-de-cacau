@@ -113,11 +113,7 @@ function checkout() {
     );
     message += `\nTotal: ${Utils.formatCurrency(total)}`;
 
-    // Codifica a mensagem para URL
-    const encodedMessage = encodeURIComponent(message);
-
-    // Abre o WhatsApp com a mensagem
-    window.open(`https://wa.me/31994409981?text=${encodedMessage}`, "_blank");
+    Utils.sendMessageWhatsapp(message, "55994409981");
 
     // Limpa o carrinho após finalizar o pedido
     clearCart();
