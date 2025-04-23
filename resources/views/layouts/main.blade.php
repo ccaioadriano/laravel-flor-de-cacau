@@ -119,6 +119,15 @@
                             aria-current="page">Início</a>
                         <a href="{{ route('about') }}"
                             class="text-white hover:text-gray-200 transition-custom">Sobre</a>
+
+                        @auth
+                            <form method="POST" action="{{  route('logout') }}" class="inline">
+                                @csrf
+                                <button type="submit" class="text-white hover:text-gray-200 transition-custom">
+                                    Sair
+                                </button>
+                            </form>
+                        @endauth
                     </div>
                 </div>
             </div>
@@ -161,7 +170,7 @@
             <div class="text-center mt-8 pt-8 border-t border-gray-700">
                 <p class="flex justify-center items-center gap-4">
                     <span>&copy; <time datetime="2025">2025</time> Flor de Cacau. Todos os direitos reservados.</span>
-                    <a href="{{ route('login')}}"
+                    <a href="/login"
                         class="text-gray-400 hover:text-white text-sm transition-custom flex items-center gap-1">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24"
                             stroke="currentColor">
