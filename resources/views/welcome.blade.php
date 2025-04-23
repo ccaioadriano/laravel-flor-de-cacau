@@ -45,28 +45,130 @@
                 <article
                     class="product-card bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-all duration-300">
                     <div class="p-6">
-                        <h3 class="text-xl font-semibold text-[#143151] mb-2">{{ $product->title }}</h3>
+                        <!-- Menu de Opções (três pontos) -->
+                        <div class="flex justify-between items-start mb-2">
+                            <h3 class="text-xl font-semibold text-[#143151]">{{ $product->title }}</h3>
+                            @auth
+                                <div class="relative" x-data="{ open: false }">
+                                    <button @click="open = !open" class="text-[#143151] hover:bg-gray-100 rounded-full p-1">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
+                                            stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z" />
+                                        </svg>
+                                    </button>
+                                    <!-- Menu Dropdown -->
+                                    <div x-show="open" @click.away="open = false"
+                                        class="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg z-50"
+                                        x-transition:enter="transition ease-out duration-100"
+                                        x-transition:enter-start="transform opacity-0 scale-95"
+                                        x-transition:enter-end="transform opacity-100 scale-100">
+                                        <div class="py-1">
+                                            <a href="{{--  --}}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                                <i class="fas fa-edit mr-2"></i> Editar Doce
+                                            </a>
+                                            <button onclick="openEditImageModal('{{ $product->id }}')"
+                                                class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                                <i class="fas fa-image mr-2"></i> Alterar Imagem
+                                            </button>
+                                            <button onclick="openPriceModal('{{ $product->id }}')"
+                                                class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                                <i class="fas fa-tag mr-2"></i> Alterar Preço
+                                            </button>
+                                            <form action="{{--  --}}" method="POST" class="block">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit"
+                                                    onclick="return confirm('Tem certeza que deseja excluir este doce?')"
+                                                    class="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-100">
+                                                    <i class="fas fa-trash-alt mr-2"></i> Excluir
+                                                </button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            @endauth
+                        </div>
+
                         <img src="{{ $product->image ?? asset('storage/brigadeiros.png') }}" alt="{{ $product->title }}"
                             class="w-full h-48 object-cover mb-4 rounded-md">
+
                         <p class="text-[#143151] font-bold mt-4">
                             R$ {{ number_format($product->price / 100, 2, ',', '.') }}
                         </p>
+
                         <div class="flex items-center mt-4 mb-2">
                             <label for="qty-{{ $product->id }}" class="mr-2 text-[#143151] font-medium">Quantidade:</label>
                             <input id="qty-{{ $product->id }}" type="number" min="1" value="1"
                                 class="w-20 border border-gray-300 rounded px-2 py-1 text-center focus:outline-none focus:ring-2 focus:ring-[#143151]">
                         </div>
-                        <button onclick="addToCart(
-                                                                                                                    '{{ $product->title }}',
-                                                                                                                    {{ $product->price / 100 }},
-                                                                                                                    '{{ $product->image ?? asset('storage/brigadeiros.png') }}',
-                                                                                                                    document.getElementById('qty-{{ $product->id }}').value
-                                                                                                                )"
+
+                        <button
+                            onclick="addToCart('{{ $product->title }}', {{ $product->price / 100 }}, '{{ $product->image ?? asset('storage/brigadeiros.png') }}', document.getElementById('qty-{{ $product->id }}').value)"
                             class="mt-2 bg-[#143151] text-white px-4 py-2 rounded-md hover:bg-[#0c1f33] transition-all duration-300 w-full">
                             Adicionar ao carrinho
                         </button>
                     </div>
                 </article>
+                <!-- Modal de Edição de Imagem -->
+                <div id="imageModal-{{ $product->id }}" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50">
+                    <div class="flex items-center justify-center min-h-screen px-4">
+                        <div class="bg-white rounded-lg shadow-xl max-w-md w-full">
+                            <div class="p-6">
+                                <h3 class="text-lg font-semibold text-[#143151] mb-4">Alterar Imagem</h3>
+                                <form action="{{--  --}}" method="POST" enctype="multipart/form-data">
+                                    @csrf
+                                    @method('PUT')
+                                    <div class="mb-4">
+                                        <label class="block text-sm font-medium text-gray-700 mb-2">Nova Imagem</label>
+                                        <input type="file" name="image" accept="image/*" required
+                                            class="w-full border border-gray-300 rounded px-3 py-2">
+                                    </div>
+                                    <div class="flex justify-end gap-2">
+                                        <button type="button" onclick="closeModal('imageModal-{{ $product->id }}')"
+                                            class="px-4 py-2 bg-gray-200 rounded hover:bg-gray-300">
+                                            Cancelar
+                                        </button>
+                                        <button type="submit"
+                                            class="px-4 py-2 bg-[#143151] text-white rounded hover:bg-[#0c1f33]">
+                                            Salvar
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Modal de Edição de Preço -->
+                <div id="priceModal-{{ $product->id }}" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50">
+                    <div class="flex items-center justify-center min-h-screen px-4">
+                        <div class="bg-white rounded-lg shadow-xl max-w-md w-full">
+                            <div class="p-6">
+                                <h3 class="text-lg font-semibold text-[#143151] mb-4">Alterar Preço</h3>
+                                <form action="{{ route('update', [$product->id]) }}" method="POST">
+                                    @csrf
+                                    @method('PUT')
+                                    <div class="mb-4">
+                                        <label class="block text-sm font-medium text-gray-700 mb-2">Novo Preço (R$)</label>
+                                        <input type="number" name="price" step="0.01" value="{{ $product->price / 100 }}"
+                                            required class="w-full border border-gray-300 rounded px-3 py-2">
+                                    </div>
+                                    <div class="flex justify-end gap-2">
+                                        <button type="button" onclick="closeModal('priceModal-{{ $product->id }}')"
+                                            class="px-4 py-2 bg-gray-200 rounded hover:bg-gray-300">
+                                            Cancelar
+                                        </button>
+                                        <button type="submit"
+                                            class="px-4 py-2 bg-[#143151] text-white rounded hover:bg-[#0c1f33]">
+                                            Salvar
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             @empty
                 <p class="text-gray-500">Nenhum produto encontrado.</p>
             @endforelse
@@ -131,6 +233,7 @@
 @endsection
 
 @push('script')
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <script src="{{ asset('js/utils.js') }}" defer></script>
     <script src="{{ asset('js/scripts.js') }}" defer></script>
 @endpush

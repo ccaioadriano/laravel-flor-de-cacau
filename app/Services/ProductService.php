@@ -37,4 +37,16 @@ class ProductService
         }
     }
 
+    public static function updateProduct($id, array $data)
+    {
+        try {
+            $product = Product::findOrFail($id);
+            $product->update($data);
+
+            return $product;
+        } catch (\Exception $e) {
+            \Log::error('Erro ao atualizar produto: ' . $e->getMessage());
+            return null;
+        }
+    }
 }

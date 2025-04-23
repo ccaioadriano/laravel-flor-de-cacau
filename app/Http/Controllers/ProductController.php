@@ -19,8 +19,19 @@ class ProductController extends Controller
     {
         $filter = $request->get('category', 'all');
 
-        $products = $this->productService->getProducts( $filter);
+        $products = $this->productService->getProducts($filter);
 
         return view('welcome', compact('products'));
+    }
+
+    public function update(Request $request, $id)
+    {
+        $product = $this->productService->updateProduct($id, $request->all());
+
+        if(!$product) {
+            return redirect()->back()->with('error', 'Falha ao atualizar o produto.');
+        }
+
+        return redirect()->route('home')->with('success', 'Produto atualizado com sucesso!');
     }
 }

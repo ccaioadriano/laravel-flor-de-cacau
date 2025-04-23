@@ -17,3 +17,4 @@ Route::get('/dashboard', function () {
 })->name('dashboard')->middleware('auth');
 
 Route::middleware(['auth'])->post('/logout', [AuthController::class, 'logout'])->name('logout');
+Route::middleware(['auth'])->put('update/{product}', [ProductController::class, 'update'])->name('update');

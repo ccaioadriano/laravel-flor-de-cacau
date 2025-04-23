@@ -170,3 +170,17 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         });
 });
+
+function openEditImageModal(productId) {
+    document.getElementById('imageModal-' + productId).classList.remove('hidden');
+    document.body.style.overflow = "hidden";
+}
+
+function openPriceModal(productId) {
+    document.getElementById('priceModal-' + productId).classList.remove('hidden');
+    document.body.style.overflow = "hidden";
+}
+
+function closeModal(modalId) {
+    document.getElementById(modalId).classList.add('hidden');
+}
