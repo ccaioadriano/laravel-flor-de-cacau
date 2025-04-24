@@ -64,7 +64,7 @@
                                         x-transition:enter-start="transform opacity-0 scale-95"
                                         x-transition:enter-end="transform opacity-100 scale-100">
                                         <div class="py-1">
-                                            <a href="{{--  --}}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                            <a href="{{ route('updateProduct', [$product->id]) }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
                                                 <i class="fas fa-edit mr-2"></i> Editar Doce
                                             </a>
                                             <button onclick="openEditImageModal('{{ $product->id }}')"
@@ -90,7 +90,7 @@
                             @endauth
                         </div>
 
-                        <img src="{{ $product->image ?? asset('storage/brigadeiros.png') }}" alt="{{ $product->title }}"
+                        <img src="{{ $product->image ? asset('storage/images/'.$product->image) : asset('storage/brigadeiros.png') }}" alt="{{ $product->title }}"
                             class="w-full h-48 object-cover mb-4 rounded-md">
 
                         <p class="text-[#143151] font-bold mt-4">
@@ -104,7 +104,7 @@
                         </div>
 
                         <button
-                            onclick="addToCart('{{ $product->title }}', {{ $product->price / 100 }}, '{{ $product->image ?? asset('storage/brigadeiros.png') }}', document.getElementById('qty-{{ $product->id }}').value)"
+                            onclick="addToCart('{{ $product->title }}', {{ $product->price / 100 }}, '{{ $product->image ? asset('storage/images/'. $product->image) : asset('storage/brigadeiros.png') }}', document.getElementById('qty-{{ $product->id }}').value)"
                             class="mt-2 bg-[#143151] text-white px-4 py-2 rounded-md hover:bg-[#0c1f33] transition-all duration-300 w-full">
                             Adicionar ao carrinho
                         </button>
@@ -116,7 +116,7 @@
                         <div class="bg-white rounded-lg shadow-xl max-w-md w-full">
                             <div class="p-6">
                                 <h3 class="text-lg font-semibold text-[#143151] mb-4">Alterar Imagem</h3>
-                                <form action="{{--  --}}" method="POST" enctype="multipart/form-data">
+                                <form action="{{ route('updateImage', [$product->id]) }}" method="POST" enctype="multipart/form-data">
                                     @csrf
                                     @method('PUT')
                                     <div class="mb-4">
@@ -146,7 +146,7 @@
                         <div class="bg-white rounded-lg shadow-xl max-w-md w-full">
                             <div class="p-6">
                                 <h3 class="text-lg font-semibold text-[#143151] mb-4">Alterar Preço</h3>
-                                <form action="{{ route('update', [$product->id]) }}" method="POST">
+                                <form action="{{ route('updatePrice', [$product->id]) }}" method="POST">
                                     @csrf
                                     @method('PUT')
                                     <div class="mb-4">

@@ -17,4 +17,6 @@ Route::get('/dashboard', function () {
 })->name('dashboard')->middleware('auth');
 
 Route::middleware(['auth'])->post('/logout', [AuthController::class, 'logout'])->name('logout');
-Route::middleware(['auth'])->put('update/{product}', [ProductController::class, 'update'])->name('update');
+Route::middleware(['auth'])->put('updateProduct/{product}', [ProductController::class, 'updateProduct'])->name('updateProduct');
+Route::middleware(['auth'])->put('updateImage/{product}', [ProductController::class, 'updateImage'])->name('updateImage');
+Route::middleware(['auth'])->put('updatePrice/{product}', [ProductController::class, 'updatePrice'])->name('updatePrice');

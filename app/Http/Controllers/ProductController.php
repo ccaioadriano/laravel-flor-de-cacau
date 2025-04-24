@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\RequestUpdateImage;
+use App\Http\Requests\RequestUpdatePrice;
+use App\Http\Requests\RequestUpdateProduct;
 use App\Services\ProductService;
 use Illuminate\Http\Request;
 
@@ -24,9 +27,40 @@ class ProductController extends Controller
         return view('welcome', compact('products'));
     }
 
-    public function update(Request $request, $id)
+    public function updateProduct(RequestUpdateProduct $request, $id)
     {
-        $product = $this->productService->updateProduct($id, $request->all());
+        $fields = $request->validated();
+
+        dd($fields);
+
+        $product = $this->productService->updateProduct($id, $fields);
+
+        if(!$product) {
+            return redirect()->back()->with('error', 'Falha ao atualizar o produto.');
+        }
+
+        return redirect()->route('home')->with('success', 'Produto atualizado com sucesso!');
+    }
+
+    public function updateImage(RequestUpdateImage $request, $id)
+    {
+        $fields = $request->validated();
+
+        $product = $this->productService->updateProduct($id, $fields);
+
+ 
+        if(!$product) {
+            return redirect()->back()->with('error', 'Falha ao atualizar o produto.');
+        }
+
+        return redirect()->route('home')->with('success', 'Produto atualizado com sucesso!');
+    }
+
+    public function updatePrice(RequestUpdatePrice $request, $id)
+    {
+        $fields = $request->validated();
+
+        $product = $this->productService->updateProduct($id, $fields);
 
         if(!$product) {
             return redirect()->back()->with('error', 'Falha ao atualizar o produto.');
