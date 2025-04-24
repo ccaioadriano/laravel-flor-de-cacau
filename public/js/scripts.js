@@ -1,110 +1,139 @@
-
-
 // Inicialização do carrinho
 let cart = [];
-const clearCartButton = document.getElementById("clearCartButton");
 
+// Document Ready (equivalente ao DOMContentLoaded)
+$(document).ready(function () {
+    // Carrega o carrinho do localStorage
+    const savedCart = localStorage.getItem("cart");
+    if (savedCart) {
+        cart = JSON.parse(savedCart);
+        updateCart();
+    }
+
+    // Event Listeners
+    $("#cart-button").on("click", openCartModal);
+    $("#close-cart").on("click", closeCartModal);
+
+    // Fecha o modal ao clicar fora dele
+    $("#cart-modal").on("click", function (event) {
+        if (event.target === this) {
+            closeCartModal();
+        }
+    });
+});
+
+// Limpar carrinho
 function clearCart() {
     cart = [];
     updateCart();
 }
 
-// Função para adicionar produto ao carrinho
+// Adicionar ao carrinho
 function addToCart(title, price, image, qtd) {
-    // Verificar se o produto já está no carrinho
+    qtd = parseInt(qtd);
     const existingItem = cart.find((item) => item.title === title);
 
-    qtd = parseInt(qtd);
     if (existingItem) {
         existingItem.quantity += qtd;
     } else {
-        // Se não existe, adiciona ao carrinho
         cart.push({
             title: title,
             price: price,
             image: image,
-            quantity: parseInt(qtd),
+            quantity: qtd,
         });
     }
 
-    // Atualiza o carrinho
     updateCart();
-
-    // Feedback visual
     alert("Produto adicionado ao carrinho!");
 }
 
-// Função para remover produto do carrinho
+// Remover do carrinho
 function removeFromCart(index) {
     cart.splice(index, 1);
     updateCart();
 }
 
-// Função para atualizar a exibição do carrinho
+// Atualizar carrinho
 function updateCart() {
     verifyEmptyButton();
-    const cartCount = document.getElementById("cart-count");
-    const cartItems = document.getElementById("cart-items");
-    const cartTotal = document.getElementById("cart-total");
 
-    // Atualiza o contador
-    const totalItems = cart.reduce((total, item) => total + parseInt(item.quantity), 0);
-    cartCount.innerHTML = totalItems;
+    // Atualiza contador
+    const totalItems = cart.reduce(
+        (total, item) => total + parseInt(item.quantity),
+        0
+    );
+    $("#cart-count").html(totalItems);
 
-    // Atualiza os itens do carrinho
+    // Atualiza itens
+    const $cartItems = $("#cart-items");
+
     if (cart.length === 0) {
-        cartItems.innerHTML =
-            '<div class="text-gray-500 text-center py-4">Seu carrinho está vazio</div>';
+        $cartItems.html(
+            '<div class="text-gray-500 text-center py-4">Seu carrinho está vazio</div>'
+        );
     } else {
-        cartItems.innerHTML = "";
+        $cartItems.empty();
 
         cart.forEach((item, index) => {
-            const itemElement = document.createElement("div");
-            itemElement.className =
-                "flex items-center justify-between py-3 border-b";
-            itemElement.innerHTML = `
-                <div class="flex items-center">
-                    <img src="${item.image}" alt="${item.title}" class="w-12 h-12 object-cover rounded-md">
-                    <div class="ml-3">
-                        <div class="text-sm font-medium text-gray-900">${item.title}</div>
-                        <div class="text-sm text-gray-500">
-                            ${Utils.formatCurrency(item.price)} x ${parseInt(item.quantity)}
+            const itemHtml = `
+                <div class="flex items-center justify-between py-3 border-b">
+                    <div class="flex items-center">
+                        <img src="${item.image}" alt="${
+                item.title
+            }" class="w-12 h-12 object-cover rounded-md">
+                        <div class="ml-3">
+                            <div class="text-sm font-medium text-gray-900">${
+                                item.title
+                            }</div>
+                            <div class="text-sm text-gray-500">
+                                ${Utils.formatCurrency(
+                                    item.price
+                                )} x ${parseInt(item.quantity)}
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="flex items-center">
-                    <button onclick="removeFromCart(${index})" class="text-gray-500 hover:text-red-500">
-                        <i class="fas fa-trash-alt"></i>
-                    </button>
+                    <div class="flex items-center">
+                        <button class="text-gray-500 hover:text-red-500 remove-item" data-index="${index}">
+                            <i class="fas fa-trash-alt"></i>
+                        </button>
+                    </div>
                 </div>
             `;
-            cartItems.appendChild(itemElement);
+            $cartItems.append(itemHtml);
+        });
+
+        // Event listener para botões de remover
+        $(".remove-item").on("click", function () {
+            const index = $(this).data("index");
+            removeFromCart(index);
         });
     }
 
-    // Atualiza o total
+    // Atualiza total
     const total = cart.reduce(
         (sum, item) => sum + item.price * parseInt(item.quantity),
         0
     );
-    cartTotal.textContent = Utils.formatCurrency(total);
+    $("#cart-total").text(Utils.formatCurrency(total));
 
-    // Salva o carrinho no localStorage
+    // Salva no localStorage
     localStorage.setItem("cart", JSON.stringify(cart));
 }
 
-// Função para finalizar o pedido
+// Checkout
 function checkout() {
     if (cart.length === 0) {
         alert("Seu carrinho está vazio!");
         return;
     }
 
-    // Prepara a mensagem para o WhatsApp
     let message = "Olá! Gostaria de fazer o seguinte pedido:\n\n";
 
     cart.forEach((item) => {
-        message += `${item.quantity}x ${item.title}: ${Utils.formatCurrency(item.price * item.quantity)}\n`;
+        message += `${item.quantity}x ${item.title}: ${Utils.formatCurrency(
+            item.price * item.quantity
+        )}\n`;
     });
 
     const total = cart.reduce(
@@ -115,72 +144,49 @@ function checkout() {
 
     Utils.sendMessageWhatsapp(message, "55994409981");
 
-    // Limpa o carrinho após finalizar o pedido
     clearCart();
-    closeCartModal()
+    closeCartModal();
 }
 
-// Funções para abrir e fechar o modal do carrinho
+// Funções do Modal do Carrinho
 function openCartModal() {
-    document.getElementById("cart-modal").classList.remove("hidden");
-    document.body.style.overflow = "hidden"; // Impede rolagem da página
+    $("#cart-modal").removeClass("hidden");
+    $("body").css("overflow", "hidden");
     verifyEmptyButton();
 }
 
-function verifyEmptyButton() {
-    if (cart.length !== 0) {
-        clearCartButton.innerHTML = `
-            <button id="empty-cart-button" onclick="clearCart()"
-                    class="w-full bg-red-500 text-white py-3 rounded-md hover:bg-red-600 transition-all duration-300 flex items-center justify-center">
-                    <i class="fas fa-trash-alt mr-2"></i> Esvaziar Carrinho
-                </button>
-            `;
-    } else {
-        clearCartButton.innerHTML = "";
-    }
-}
-
 function closeCartModal() {
-    document.getElementById("cart-modal").classList.add("hidden");
-    document.body.style.overflow = "auto"; // Permite rolagem da página
+    $("#cart-modal").addClass("hidden");
+    $("body").css("overflow", "auto");
 }
 
-// Carrega o carrinho do localStorage ao iniciar a página
-document.addEventListener("DOMContentLoaded", function () {
-    const savedCart = localStorage.getItem("cart");
-    if (savedCart) {
-        cart = JSON.parse(savedCart);
-        updateCart();
+function verifyEmptyButton() {
+    const $clearCartButton = $("#clearCartButton");
+
+    if (cart.length !== 0) {
+        $clearCartButton.html(`
+            <button id="empty-cart-button" class="w-full bg-red-500 text-white py-3 rounded-md hover:bg-red-600 transition-all duration-300 flex items-center justify-center">
+                <i class="fas fa-trash-alt mr-2"></i> Esvaziar Carrinho
+            </button>
+        `);
+        $("#empty-cart-button").on("click", clearCart);
+    } else {
+        $clearCartButton.empty();
     }
+}
 
-    // Adiciona os event listeners
-    document
-        .getElementById("cart-button")
-        .addEventListener("click", openCartModal);
-    document
-        .getElementById("close-cart")
-        .addEventListener("click", closeCartModal);
-
-    // Fecha o modal ao clicar fora dele
-    document
-        .getElementById("cart-modal")
-        .addEventListener("click", function (event) {
-            if (event.target === this) {
-                closeCartModal();
-            }
-        });
-});
-
+// Funções dos Modais de Edição
 function openEditImageModal(productId) {
-    document.getElementById('imageModal-' + productId).classList.remove('hidden');
-    document.body.style.overflow = "hidden";
+    $(`#imageModal-${productId}`).removeClass("hidden");
+    $("body").css("overflow", "hidden");
 }
 
 function openPriceModal(productId) {
-    document.getElementById('priceModal-' + productId).classList.remove('hidden');
-    document.body.style.overflow = "hidden";
+    $(`#priceModal-${productId}`).removeClass("hidden");
+    $("body").css("overflow", "hidden");
 }
 
 function closeModal(modalId) {
-    document.getElementById(modalId).classList.add('hidden');
+    $(`#${modalId}`).addClass("hidden");
+    $("body").css("overflow", "auto");
 }
