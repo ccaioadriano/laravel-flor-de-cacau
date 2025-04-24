@@ -13,7 +13,6 @@ class ProductService
     {
 
         try {
-
             $query = Product::query();
 
             if ($filter !== 'all') {
@@ -51,7 +50,8 @@ class ProductService
                 );
                 $product->update(['image' => $data['image']->getClientOriginalName()]);
             } elseif (array_key_exists('price', $data)) {
-                $product->update(['price' => $data['price']]);
+                $price = preg_replace('/[^0-9]/', '', $data['price']);
+                $product->update(['price'=>$price]);
             } else {
                 $product->update($data);
             }

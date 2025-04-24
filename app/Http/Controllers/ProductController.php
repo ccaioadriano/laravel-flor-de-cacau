@@ -30,9 +30,6 @@ class ProductController extends Controller
     public function updateProduct(RequestUpdateProduct $request, $id)
     {
         $fields = $request->validated();
-
-        dd($fields);
-
         $product = $this->productService->updateProduct($id, $fields);
 
         if(!$product) {

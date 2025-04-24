@@ -94,7 +94,7 @@
                             class="w-full h-48 object-cover mb-4 rounded-md">
 
                         <p class="text-[#143151] font-bold mt-4">
-                            R$ {{ number_format($product->price / 100, 2, ',', '.') }}
+                            R$ {{ number_format($product->price, 2, ',', '.') }}
                         </p>
 
                         <div class="flex items-center mt-4 mb-2">
@@ -104,7 +104,7 @@
                         </div>
 
                         <button
-                            onclick="addToCart('{{ $product->title }}', {{ $product->price / 100 }}, '{{ $product->image ? asset('storage/images/'. $product->image) : asset('img/default.png') }}', document.getElementById('qty-{{ $product->id }}').value)"
+                            onclick="addToCart('{{ $product->title }}', {{ $product->price}}, '{{ $product->image ? asset('storage/images/'. $product->image) : asset('img/default.png') }}', document.getElementById('qty-{{ $product->id }}').value)"
                             class="mt-2 bg-[#143151] text-white px-4 py-2 rounded-md hover:bg-[#0c1f33] transition-all duration-300 w-full">
                             Adicionar ao carrinho
                         </button>
@@ -151,7 +151,7 @@
                                     @method('PUT')
                                     <div class="mb-4">
                                         <label class="block text-sm font-medium text-gray-700 mb-2">Novo Preço (R$)</label>
-                                        <input type="number" name="price" step="0.01" value="{{ $product->price / 100 }}"
+                                        <input name="price" id="price-{{ $product->id }}" value="{{ $product->price}}"
                                             required class="w-full border border-gray-300 rounded px-3 py-2">
                                     </div>
                                     <div class="flex justify-end gap-2">
@@ -234,7 +234,7 @@
 
 @push('script')
     <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <script src={{ asset('plugins/jquery.maskMoney.js') }} type="text/javascript"></script>
     <script src="{{ asset('js/utils.js') }}" defer></script>
     <script src="{{ asset('js/scripts.js') }}" defer></script>
-    <script src={{ asset('plugins/jquery.maskMoney.js') }} type="text/javascript"></script>
 @endpush
