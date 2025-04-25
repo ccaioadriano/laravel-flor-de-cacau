@@ -20,3 +20,4 @@ Route::middleware(['auth'])->post('/logout', [AuthController::class, 'logout'])-
 Route::middleware(['auth'])->put('updateProduct/{product}', [ProductController::class, 'updateProduct'])->name('updateProduct');
 Route::middleware(['auth'])->put('updateImage/{product}', [ProductController::class, 'updateImage'])->name('updateImage');
 Route::middleware(['auth'])->put('updatePrice/{product}', [ProductController::class, 'updatePrice'])->name('updatePrice');
+Route::middleware(['auth'])->delete('updatePrice/{product}/delete', [ProductController::class, 'deleteProduct'])->name('deleteProduct');

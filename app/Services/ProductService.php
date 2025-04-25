@@ -62,4 +62,16 @@ class ProductService
             return null;
         }
     }
+
+    public function deleteProduct($id){
+        try {
+            $product = Product::findOrFail($id);
+            $product->delete();
+            return true;
+        } catch (\Exception $e) {
+            \Log::error('Erro ao deletar produto: ' . $e->getMessage());
+        }
+
+        return null;
+    }
 }

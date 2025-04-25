@@ -65,4 +65,13 @@ class ProductController extends Controller
 
         return redirect()->route('home')->with('success', 'Produto atualizado com sucesso!');
     }
+
+    public function deleteProduct($id)
+    {
+        $product = $this->productService->deleteProduct($id);
+        if(!$product) {
+            return redirect()->back()->with('error', 'Falha ao deletar o produto.');
+        }
+        return redirect()->route('home')->with('success', 'Produto deletado com sucesso!');
+    }
 }
