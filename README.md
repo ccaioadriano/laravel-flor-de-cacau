@@ -26,7 +26,7 @@ Projeto desenvolvido com o intuito de facilitar a venda de doces na região ofer
 
 1. Clone o repositório:
     ```bash
-    git clone https://github.com/seu-usuario/laravel-flor-de-cacau.git
+    git clone https://github.com/ccaioadriano/laravel-flor-de-cacau.git
     ```
 2. Instale as dependências:
     ```bash
