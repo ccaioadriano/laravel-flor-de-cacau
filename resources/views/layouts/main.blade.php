@@ -106,35 +106,59 @@
     </script>
 </head>
 
-<body class="bg-gray-50">
-    <!-- Cabeçalho -->
+<body class="bg-gray-50 h-screen flex flex-col">
     <header class="bg-[#143151] shadow-lg">
-        <nav class="container mx-auto px-6 py-4" aria-label="Navegação principal">
-            <div class="flex items-center justify-between">
+        <div class="container mx-auto">
+            <div class="flex items-center justify-between px-6 py-4">
                 <div class="text-2xl font-bold text-white">
                     <a href="/" aria-label="Flor de Cacau - Página inicial">
                         <h1>Flor de Cacau</h1>
                     </a>
                 </div>
-                <div class="flex items-center space-x-8">
-                    <div class="flex items-center space-x-8">
-                        <a href="/" class="text-white hover:text-gray-200 transition-custom"
+
+                <button id="menuButton" class="md:hidden text-white focus:outline-none" aria-label="Menu">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M4 6h16M4 12h16M4 18h16">
+                        </path>
+                    </svg>
+                </button>
+
+                <!-- Menu de navegação -->
+                <nav id="navMenu" class="hidden md:block" aria-label="Navegação principal">
+                    <div class="md:flex items-center space-x-8">
+                        <a href="/"
+                            class="block md:inline-block text-white hover:text-gray-200 transition-custom py-2 md:py-0"
                             aria-current="page">Início</a>
                         <a href="{{ route('about') }}"
-                            class="text-white hover:text-gray-200 transition-custom">Sobre</a>
-
+                            class="block md:inline-block text-white hover:text-gray-200 transition-custom py-2 md:py-0">Sobre</a>
                         @auth
-                            <form method="POST" action="{{  route('logout') }}" class="inline">
+                            <form method="POST" action="{{ route('logout') }}" class="inline">
                                 @csrf
-                                <button type="submit" class="text-white hover:text-gray-200 transition-custom">
+                                <button type="submit"
+                                    class="block md:inline-block text-white hover:text-gray-200 transition-custom py-2 md:py-0">
                                     Sair
                                 </button>
                             </form>
                         @endauth
                     </div>
-                </div>
+                </nav>
             </div>
-        </nav>
+
+            <div id="mobileMenu" class="hidden md:hidden bg-[#143151] pb-4 px-6">
+                <a href="/" class="block text-white hover:text-gray-200 transition-custom py-2">Início</a>
+                <a href="{{ route('about') }}"
+                    class="block text-white hover:text-gray-200 transition-custom py-2">Sobre</a>
+                @auth
+                    <form method="POST" action="{{ route('logout') }}" class="block">
+                        @csrf
+                        <button type="submit" class="text-white hover:text-gray-200 transition-custom py-2">
+                            Sair
+                        </button>
+                    </form>
+                @endauth
+            </div>
+        </div>
     </header>
 
     <main id="conteudo-principal">
@@ -142,7 +166,7 @@
     </main>
 
     <!-- Footer -->
-    <footer class="bg-[#143151] text-white py-8 mt-10">
+    <footer class="bg-[#143151] text-white py-8 mt-10 flex-1">
         <div class="container mx-auto px-6">
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
                 <section>
@@ -189,6 +213,42 @@
 
     <!-- Scripts -->
     @stack('script')
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const menuButton = document.getElementById('menuButton');
+            const mobileMenu = document.getElementById('mobileMenu');
+
+            menuButton.addEventListener('click', function () {
+                // Toggle do menu mobile
+                if (mobileMenu.classList.contains('hidden')) {
+                    mobileMenu.classList.remove('hidden');
+                    menuButton.innerHTML = `
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                        </svg>
+                    `;
+                } else {
+                    mobileMenu.classList.add('hidden');
+                    menuButton.innerHTML = `
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                        </svg>
+                    `;
+                }
+            });
+
+            window.addEventListener('resize', function () {
+                if (window.innerWidth >= 768) { // 768px é o breakpoint md do Tailwind
+                    mobileMenu.classList.add('hidden');
+                    menuButton.innerHTML = `
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                        </svg>
+                    `;
+                }
+            });
+        });
+    </script>
 </body>
 
 </html>
