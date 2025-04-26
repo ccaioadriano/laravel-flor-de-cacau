@@ -49,6 +49,7 @@ Projeto desenvolvido com o intuito de facilitar a venda de doces na região ofer
 - [ ] Possibilidade de gerar relatórios
 - [ ] Adicionar menu responsivo
 - [ ] Implementar CRUD de categorias
+- [ ] Melhorar painel admin (qtd_doces x categoria)
 
 
 ## Contribuição
