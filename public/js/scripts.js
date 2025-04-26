@@ -142,7 +142,7 @@ function checkout() {
     );
     message += `\nTotal: ${Utils.formatCurrency(total)}`;
 
-    Utils.sendMessageWhatsapp(message, "31994409981");
+    Utils.sendMessageWhatsapp(message, `${window.config.phoneClean}`);
 
     clearCart();
     closeCartModal();

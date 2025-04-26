@@ -177,8 +177,8 @@
                     <h2 class="text-xl font-semibold mb-4">Contato</h2>
                     <address class="not-italic">
                         <p class="text-gray-300">
-                            <a href="https://wa.me/5531995619393" class="hover:text-white transition-custom">
-                                WhatsApp: +55 (31) 99561-9393
+                            <a href="https://wa.me/{{ config('contact.phone_clean') }}" class="hover:text-white transition-custom">
+                                WhatsApp: {{ config('contact.phone') }}
                             </a>
                         </p>
                         <p class="text-gray-300">

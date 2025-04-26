@@ -64,7 +64,8 @@
                                         x-transition:enter-start="transform opacity-0 scale-95"
                                         x-transition:enter-end="transform opacity-100 scale-100">
                                         <div class="py-1">
-                                            <a href="{{ route('updateProduct', [$product->id]) }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                            <a href="{{ route('updateProduct', [$product->id]) }}"
+                                                class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
                                                 <i class="fas fa-edit mr-2"></i> Editar Doce
                                             </a>
                                             <button onclick="openEditImageModal('{{ $product->id }}')"
@@ -90,8 +91,8 @@
                             @endauth
                         </div>
 
-                        <img src="{{ $product->image ? asset('storage/images/'.$product->image) : asset('img/default.png') }}" alt="{{ $product->title }}"
-                            class="w-full h-48 object-cover mb-4 rounded-md">
+                        <img src="{{ $product->image ? asset('storage/images/' . $product->image) : asset('img/default.png') }}"
+                            alt="{{ $product->title }}" class="w-full h-48 object-cover mb-4 rounded-md">
 
                         <p class="text-[#143151] font-bold mt-4">
                             R$ {{ number_format($product->price, 2, ',', '.') }}
@@ -104,7 +105,7 @@
                         </div>
 
                         <button
-                            onclick="addToCart('{{ $product->title }}', {{ $product->price}}, '{{ $product->image ? asset('storage/images/'. $product->image) : asset('img/default.png') }}', document.getElementById('qty-{{ $product->id }}').value)"
+                            onclick="addToCart('{{ $product->title }}', {{ $product->price}}, '{{ $product->image ? asset('storage/images/' . $product->image) : asset('img/default.png') }}', document.getElementById('qty-{{ $product->id }}').value)"
                             class="mt-2 bg-[#143151] text-white px-4 py-2 rounded-md hover:bg-[#0c1f33] transition-all duration-300 w-full">
                             Adicionar ao carrinho
                         </button>
@@ -116,7 +117,8 @@
                         <div class="bg-white rounded-lg shadow-xl max-w-md w-full">
                             <div class="p-6">
                                 <h3 class="text-lg font-semibold text-[#143151] mb-4">Alterar Imagem</h3>
-                                <form action="{{ route('updateImage', [$product->id]) }}" method="POST" enctype="multipart/form-data">
+                                <form action="{{ route('updateImage', [$product->id]) }}" method="POST"
+                                    enctype="multipart/form-data">
                                     @csrf
                                     @method('PUT')
                                     <div class="mb-4">
@@ -151,8 +153,8 @@
                                     @method('PUT')
                                     <div class="mb-4">
                                         <label class="block text-sm font-medium text-gray-700 mb-2">Novo Preço (R$)</label>
-                                        <input name="price" id="price-{{ $product->id }}" value="{{ $product->price}}"
-                                            required class="w-full border border-gray-300 rounded px-3 py-2">
+                                        <input name="price" id="price-{{ $product->id }}" value="{{ $product->price}}" required
+                                            class="w-full border border-gray-300 rounded px-3 py-2">
                                     </div>
                                     <div class="flex justify-end gap-2">
                                         <button type="button" onclick="closeModal('priceModal-{{ $product->id }}')"
@@ -180,7 +182,7 @@
     </section>
 
     <!-- Botão flutuante do WhatsApp -->
-    <button onclick="Utils.sendMessageWhatsapp(null,'31994409981')" target="_blank"
+    <button onclick="Utils.sendMessageWhatsapp(null,'{{ config('contact.phone_clean') }}')" target="_blank"
         class="fixed bottom-[10%] right-6 bg-green-500 text-white w-14 h-14 flex items-center justify-center rounded-full shadow-lg hover:bg-green-600 hover:scale-110 transition-all duration-300 z-50">
         <i class="fab fa-whatsapp text-3xl"></i>
     </button>
@@ -233,6 +235,11 @@
 @endsection
 
 @push('script')
+    <script>
+        window.config = {
+            phoneClean: "{{ config('contact.phone_clean') }}"
+        }
+    </script>
     <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <script src={{ asset('plugins/jquery.maskMoney.js') }} type="text/javascript"></script>
     <script src="{{ asset('js/utils.js') }}" defer></script>
