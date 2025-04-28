@@ -184,16 +184,12 @@ function openEditImageModal(productId) {
 function openPriceModal(productId) {
     $(`#priceModal-${productId}`).removeClass("hidden");
     $("body").css("overflow", "hidden");
-    applyMask(`#price-${productId}`);
+    Utils.applyMaskMoney(`#price-${productId}`);
 }
 
 function closeModal(modalId) {
     $(`#${modalId}`).addClass("hidden");
     $("body").css("overflow", "auto");
-}
-
-function applyMask(input) {
-    $(input).maskMoney({prefix:'R$ ', allowNegative: true, thousands:'.', decimal:',', affixesStay: false});
 }
 
 

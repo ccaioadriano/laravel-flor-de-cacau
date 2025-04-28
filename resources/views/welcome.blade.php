@@ -64,10 +64,6 @@
                                         x-transition:enter-start="transform opacity-0 scale-95"
                                         x-transition:enter-end="transform opacity-100 scale-100">
                                         <div class="py-1">
-                                            <a href="{{ route('updateProduct', [$product->id]) }}"
-                                                class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                                                <i class="fas fa-edit mr-2"></i> Editar Doce
-                                            </a>
                                             <button onclick="openEditImageModal('{{ $product->id }}')"
                                                 class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
                                                 <i class="fas fa-image mr-2"></i> Alterar Imagem
@@ -96,6 +92,10 @@
 
                         <p class="text-[#143151] font-bold mt-4">
                             R$ {{ number_format($product->price, 2, ',', '.') }}
+                        </p>
+
+                        <p class="text-gray-600 mt-2">
+                            {{ $product->description }}
                         </p>
 
                         <div class="flex items-center mt-4 mb-2">
@@ -171,6 +171,7 @@
                         </div>
                     </div>
                 </div>
+
             @empty
                 <p class="text-gray-500">Nenhum produto encontrado.</p>
             @endforelse
