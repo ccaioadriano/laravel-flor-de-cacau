@@ -6,6 +6,7 @@ use App\Models\Product;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use App\Models\Category;
 
 class DatabaseSeeder extends Seeder
 {
@@ -141,6 +142,26 @@ class DatabaseSeeder extends Seeder
         User::factory()->create([
             'name' => 'Test User',
             'email' => 'test@example.com',
+        ]);
+
+        Category::factory()->create([
+            'name' => 'Doces Gourmet',
+            'slug' => str('Doces Gourmet')->slug(),
+        ]);
+
+        Category::factory()->create([
+            'name' => 'Trufas',
+            'slug' => str('Trufas')->slug(),
+        ]);
+
+        Category::factory()->create([
+            'name' => 'Bolos no Pote',
+            'slug' => str(string: 'Bolos no Pote')->slug(),
+        ]);
+
+        Category::factory()->create([
+            'name' => 'Kits e Presentes',
+            'slug' => str(string: 'Kits e Presentes')->slug(),
         ]);
     }
 }
