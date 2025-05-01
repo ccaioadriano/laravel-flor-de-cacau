@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Http\Requests\RequestUpdateImage;
 use App\Http\Requests\RequestUpdatePrice;
 use App\Http\Requests\RequestUpdateProduct;
+use App\Models\Category;
+use App\Models\Product;
 use App\Services\ProductService;
 use Illuminate\Http\Request;
 
@@ -24,7 +26,11 @@ class ProductController extends Controller
 
         $products = $this->productService->getProducts($filter);
 
-        return view('welcome', compact('products'));
+        $categories = Category::whereIn('id', Product::where('category_id', '!=', 'null')->pluck('category_id'))
+            ->select(['id', 'name', 'slug'])
+            ->get();
+
+        return view('welcome', compact('products', 'categories'));
     }
 
     public function updateProduct(RequestUpdateProduct $request, $id)
@@ -32,7 +38,7 @@ class ProductController extends Controller
         $fields = $request->validated();
         $product = $this->productService->updateProduct($id, $fields);
 
-        if(!$product) {
+        if (!$product) {
             return redirect()->back()->with('error', 'Falha ao atualizar o produto.');
         }
 
@@ -45,8 +51,8 @@ class ProductController extends Controller
 
         $product = $this->productService->updateProduct($id, $fields);
 
- 
-        if(!$product) {
+
+        if (!$product) {
             return redirect()->back()->with('error', 'Falha ao atualizar o produto.');
         }
 
@@ -59,7 +65,7 @@ class ProductController extends Controller
 
         $product = $this->productService->updateProduct($id, $fields);
 
-        if(!$product) {
+        if (!$product) {
             return redirect()->back()->with('error', 'Falha ao atualizar o produto.');
         }
 
@@ -69,7 +75,7 @@ class ProductController extends Controller
     public function deleteProduct($id)
     {
         $product = $this->productService->deleteProduct($id);
-        if(!$product) {
+        if (!$product) {
             return redirect()->back()->with('error', 'Falha ao deletar o produto.');
         }
         return redirect()->route('home')->with('success', 'Produto deletado com sucesso!');

@@ -1,7 +1,9 @@
 <?php
 namespace App\Services;
 
+use App\Models\Category;
 use App\Models\Product;
+use Cache;
 use Illuminate\Support\Facades\Storage;
 
 class ProductService
@@ -11,17 +13,19 @@ class ProductService
 
     public function getProducts($filter)
     {
-
         try {
-            $query = Product::query();
+            $products = Cache::remember('products', 60, function () {
+                return Product::select(['id', 'title', 'description', 'price', 'image'])
+                    ->latest()
+                    ->get();
+            });
 
             if ($filter !== 'all') {
-                $query->where('category', $filter)->paginate(self::PER_PAGE);
+                $productsByCategory = Category::where('slug', $filter)->first();
+                return $productsByCategory->products()->paginate(self::PER_PAGE);
             }
 
-            $products = $query->paginate(self::PER_PAGE);
-
-            return $products;
+            return $products->paginate(self::PER_PAGE);
 
         } catch (\Exception $e) {
             \Log::error('Erro ao buscar produtos: ' . $e->getMessage());
@@ -51,7 +55,7 @@ class ProductService
                 $product->update(['image' => $data['image']->getClientOriginalName()]);
             } elseif (array_key_exists('price', $data)) {
                 $price = preg_replace('/[^0-9]/', '', $data['price']);
-                $product->update(['price'=>$price]);
+                $product->update(['price' => $price]);
             } else {
                 $product->update($data);
             }
@@ -63,7 +67,8 @@ class ProductService
         }
     }
 
-    public function deleteProduct($id){
+    public function deleteProduct($id)
+    {
         try {
             $product = Product::findOrFail($id);
             $product->delete();

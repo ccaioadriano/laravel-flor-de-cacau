@@ -23,19 +23,12 @@
                     class="filter-btn px-4 py-2 text-sm font-medium {{ (request()->category === 'all') || !request()->category ? 'bg-[#143151] text-white' : 'bg-gray-200 text-gray-700  hover:bg-gray-300' }} rounded">
                     Todos
                 </a>
-
-                <a href="{{ route('home', ['category' => 'brigadeiros']) }}"
-                    class="filter-btn px-4 py-2 text-sm font-medium {{ (request()->category === 'brigadeiros') ? 'bg-[#143151] text-white' : 'bg-gray-200 text-gray-700  hover:bg-gray-300' }} rounded">
-                    Brigadeiros
-                </a>
-                <a href="{{ route('home', ['category' => 'bolos']) }}"
-                    class="filter-btn px-4 py-2 text-sm font-medium {{ (request()->category === 'bolos') ? 'bg-[#143151] text-white' : 'bg-gray-200 text-gray-700  hover:bg-gray-300' }} rounded">
-                    Bolos
-                </a>
-                <a href="{{ route('home', ['category' => 'trufas']) }}"
-                    class="filter-btn px-4 py-2 text-sm font-medium {{ (request()->category === 'trufas') ? 'bg-[#143151] text-white' : 'bg-gray-200 text-gray-700  hover:bg-gray-300' }} rounded">
-                    Trufas
-                </a>
+                @foreach ($categories as $category)
+                    <a href="{{ route('home', ['category' => $category->slug]) }}"
+                        class="filter-btn px-4 py-2 text-sm font-medium {{ request()->category == $category->slug ? 'bg-[#143151] text-white' : 'bg-gray-200 text-gray-700 hover:bg-gray-300' }} rounded">
+                        {{ $category->name }}
+                    </a>
+                @endforeach
             </div>
         </div>
 
