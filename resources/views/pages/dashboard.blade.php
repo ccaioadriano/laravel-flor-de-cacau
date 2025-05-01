@@ -1,124 +1,116 @@
 @extends('layouts.main')
 @section('content')
-<div class="container mx-auto px-6 py-8">
-    <h1 class="text-3xl font-semibold text-gray-800 mb-8">Painel Administrativo</h1>
+    <div class="container mx-auto px-6 py-8 min-h-[780px]" x-data="docesCategorias()">
+        <h1 class="text-3xl font-semibold text-gray-800 mb-8">Painel Administrativo</h1>
 
-    <div class="flex justify-end">
-        <button class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 mb-10 " onclick="console.log('Relatório gerado')">Gerar Relatório</button>
-    </div>
-    
-    <!-- Cards de Métricas -->
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-        <!-- Pedidos do Mês -->
-        <div class="bg-white rounded-lg shadow p-6">
-            <div class="flex items-center">
-                <div class="p-3 rounded-full bg-blue-100 mr-4">
-                    <i class="fas fa-shopping-bag text-blue-500"></i>
-                </div>
+        <!-- Seção de Vinculação de Doces às Categorias -->
+        <div class="bg-white rounded-lg shadow p-6 mb-8">
+            <h2 class="text-xl font-semibold text-gray-800 mb-6">Vincular Doces às Categorias</h2>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <!-- Lista de Doces -->
                 <div>
-                    <p class="text-gray-500 text-sm">Pedidos do Mês</p>
-                    <p class="text-2xl font-semibold text-gray-700">45</p>
+                    <h3 class="text-lg font-medium text-gray-700 mb-4">Doces Disponíveis</h3>
+                    <div class="border rounded-lg">
+                        <!-- Campo de busca -->
+                        <div class="p-4 border-b bg-gray-50">
+                            <input type="text" placeholder="Buscar doces..."
+                                class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        </div>
+
+                        <!-- Lista de Doces -->
+                        <div class="h-96 overflow-y-auto p-4">
+                            <!-- Cada doce terá um dropdown para selecionar a categoria -->
+                            <div class="flex items-center justify-between p-3 hover:bg-gray-50 border-b">
+                                <span class="text-gray-700">Doce de Maracujá</span>
+                                <select
+                                    class="border rounded-lg px-3 py-1 text-sm text-gray-700 focus:ring-2 focus:ring-blue-500 focus:outline-none">
+                                    <option value="">Selecionar categoria...</option>
+                                    <option value="1">Chocolates</option>
+                                    <option value="2">Frutas</option>
+                                    <option value="3">Coco</option>
+                                    <option value="4">Tradicionais</option>
+                                </select>
+                            </div>
+
+                            <div class="flex items-center justify-between p-3 hover:bg-gray-50 border-b">
+                                <span class="text-gray-700">Brigadeiro</span>
+                                <select
+                                    class="border rounded-lg px-3 py-1 text-sm text-gray-700 focus:ring-2 focus:ring-blue-500 focus:outline-none">
+                                    <option value="">Selecionar categoria...</option>
+                                    <option value="1">Chocolates</option>
+                                    <option value="2">Frutas</option>
+                                    <option value="3">Coco</option>
+                                    <option value="4">Tradicionais</option>
+                                </select>
+                            </div>
+
+                            <!-- Mais doces... -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Categorias -->
+                <div>
+                    <h3 class="text-lg font-medium text-gray-700 mb-4">Categorias</h3>
+                    <div class="space-y-4">
+                        <!-- Categoria Frutas -->
+                        @foreach ($categories as $category)
+                            <div class="border rounded-lg p-4">
+                                <div class="flex items-center justify-between mb-2">
+                                    <h4 class="font-medium text-gray-800">{{$category->name}}</h4>
+                                    <span
+                                        class="text-sm text-gray-500">{{ $category->getCountProducts() == 1 ? $category->getCountProducts() . " Doce" : $category->getCountProducts() . " Doces" }}</span>
+                                </div>
+                                <div class="bg-gray-50 p-3 rounded-lg">
+                                    <div class="flex flex-wrap gap-2">
+                                        @foreach ($category->products as $product)
+                                            <span
+                                                class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm flex items-center">
+                                                <span class="mr-2">{{$product->title}}</span>
+                                                <button class="ml-2 text-blue-600 hover:text-blue-800" onclick="unlikeProduct({{$product->id}})">
+                                                    <i class="fas fa-times"></i>
+                                                </button>
+                                            </span>
+                                        @endforeach
+                                    </div>
+                                </div>
+                            </div>
+                        @endforeach
+                    </div>
                 </div>
             </div>
         </div>
 
-        <!-- Faturamento -->
-        <div class="bg-white rounded-lg shadow p-6">
-            <div class="flex items-center">
-                <div class="p-3 rounded-full bg-green-100 mr-4">
-                    <i class="fas fa-dollar-sign text-green-500"></i>
-                </div>
-                <div>
-                    <p class="text-gray-500 text-sm">Faturamento</p>
-                    <p class="text-2xl font-semibold text-gray-700">R$ 3.250,00</p>
-                </div>
-            </div>
-        </div>
-
-        <!-- Produtos Cadastrados -->
-        <div class="bg-white rounded-lg shadow p-6">
-            <div class="flex items-center">
-                <div class="p-3 rounded-full bg-purple-100 mr-4">
-                    <i class="fas fa-box text-purple-500"></i>
-                </div>
-                <div>
-                    <p class="text-gray-500 text-sm">Produtos</p>
-                    <p class="text-2xl font-semibold text-gray-700">28</p>
-                </div>
-            </div>
-        </div>
-
-        <!-- Clientes -->
-        <div class="bg-white rounded-lg shadow p-6">
-            <div class="flex items-center">
-                <div class="p-3 rounded-full bg-red-100 mr-4">
-                    <i class="fas fa-users text-red-500"></i>
-                </div>
-                <div>
-                    <p class="text-gray-500 text-sm">Clientes</p>
-                    <p class="text-2xl font-semibold text-gray-700">156</p>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Últimos Pedidos -->
-    <div class="bg-white rounded-lg shadow mb-8">
-        <div class="p-6">
-            <h2 class="text-xl font-semibold text-gray-800 mb-4">Últimos Pedidos</h2>
-            <div class="overflow-x-auto">
-                <table class="w-full">
-                    <thead>
-                        <tr class="bg-gray-50">
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                Pedido
-                            </th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                Cliente
-                            </th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                Valor
-                            </th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                Status
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody class="bg-white divide-y divide-gray-200">
-                        <tr>
-                            <td class="px-6 py-4 whitespace-nowrap">#1234</td>
-                            <td class="px-6 py-4 whitespace-nowrap">Maria Silva</td>
-                            <td class="px-6 py-4 whitespace-nowrap">R$ 150,00</td>
-                            <td class="px-6 py-4 whitespace-nowrap">
-                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
-                                    Entregue
-                                </span>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="px-6 py-4 whitespace-nowrap">#1233</td>
-                            <td class="px-6 py-4 whitespace-nowrap">João Santos</td>
-                            <td class="px-6 py-4 whitespace-nowrap">R$ 85,00</td>
-                            <td class="px-6 py-4 whitespace-nowrap">
-                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">
-                                    Em Preparo
-                                </span>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="px-6 py-4 whitespace-nowrap">#1232</td>
-                            <td class="px-6 py-4 whitespace-nowrap">Ana Oliveira</td>
-                            <td class="px-6 py-4 whitespace-nowrap">R$ 220,00</td>
-                            <td class="px-6 py-4 whitespace-nowrap">
-                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">
-                                    Em Entrega
-                                </span>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
+        <!-- Botão de Salvar -->
+        <div class="flex justify-end">
+            <button
+                class="bg-green-500 text-white px-6 py-2 rounded-lg hover:bg-green-600 focus:ring-2 focus:ring-green-500 focus:ring-offset-2"
+                disabled>
+                Salvar Alterações
+            </button>
         </div>
     </div>
-</div>
 @endsection
+@push('script')
+    <script>
+        function unlikeProduct(id){
+            $.ajax({
+                url: "/unlike-product/" + id,
+                type: "PUT",
+                data: {
+                    id: id,
+                    _token: "{{ csrf_token() }}"
+                },
+                success: function(response) {
+                    console.log(response);
+                    window.location.reload();
+                },
+                error: function(xhr, status, error) {
+                    console.error(error);
+                    alert("Erro ao desassociar o produto.");
+                }
+            });
+        }
+    </script>
+@endpush

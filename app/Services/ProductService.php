@@ -63,7 +63,7 @@ class ProductService
             return $product;
         } catch (\Exception $e) {
             \Log::error('Erro ao atualizar produto: ' . $e->getMessage());
-            return null;
+            return false;
         }
     }
 
@@ -77,6 +77,19 @@ class ProductService
             \Log::error('Erro ao deletar produto: ' . $e->getMessage());
         }
 
-        return null;
+        return false;
+    }
+
+    public function unlikeProduct($id)
+    {
+        try {
+            $product = Product::findOrFail($id);
+            \Log::error('Erro ao desvincular produto: ' . $product);
+            $product->update(['category_id' => null]);
+            return true;
+        } catch (\Exception $e) {
+            \Log::error('Erro ao desvincular produto: ' . $e->getMessage());
+        }
+        return false;
     }
 }

@@ -133,6 +133,8 @@
                         <a href="{{ route('about') }}"
                             class="block md:inline-block text-white hover:text-gray-200 transition-custom py-2 md:py-0">Sobre</a>
                         @auth
+                            <a href="{{ route('dashboard') }}"
+                                class="block md:inline-block text-white hover:text-gray-200 transition-custom py-2 md:py-0">Administração</a>
                             <form method="POST" action="{{ route('logout') }}" class="inline">
                                 @csrf
                                 <button type="submit"
@@ -150,6 +152,8 @@
                 <a href="{{ route('about') }}"
                     class="block text-white hover:text-gray-200 transition-custom py-2">Sobre</a>
                 @auth
+                    <a href="{{ route('dashboard') }}"
+                        class="block md:inline-block text-white hover:text-gray-200 transition-custom py-2 md:py-0">Administração</a>
                     <form method="POST" action="{{ route('logout') }}" class="block">
                         @csrf
                         <button type="submit" class="text-white hover:text-gray-200 transition-custom py-2">
@@ -177,7 +181,8 @@
                     <h2 class="text-xl font-semibold mb-4">Contato</h2>
                     <address class="not-italic">
                         <p class="text-gray-300">
-                            <a href="https://wa.me/{{ config('contact.phone_clean') }}" class="hover:text-white transition-custom">
+                            <a href="https://wa.me/{{ config('contact.phone_clean') }}"
+                                class="hover:text-white transition-custom">
                                 WhatsApp: {{ config('contact.phone') }}
                             </a>
                         </p>
@@ -214,38 +219,38 @@
     <!-- Scripts -->
     @stack('script')
     <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            const menuButton = document.getElementById('menuButton');
-            const mobileMenu = document.getElementById('mobileMenu');
+        $(document).ready(function () {
+            const menuButton = $('#menuButton');
+            const mobileMenu = $('#mobileMenu');
 
-            menuButton.addEventListener('click', function () {
-                // Toggle do menu mobile
-                if (mobileMenu.classList.contains('hidden')) {
-                    mobileMenu.classList.remove('hidden');
-                    menuButton.innerHTML = `
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-                        </svg>
-                    `;
-                } else {
-                    mobileMenu.classList.add('hidden');
-                    menuButton.innerHTML = `
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
-                        </svg>
-                    `;
-                }
+            menuButton.on('click', function () {
+            // Toggle do menu mobile
+            if (mobileMenu.hasClass('hidden')) {
+                mobileMenu.removeClass('hidden');
+                menuButton.html(`
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                </svg>
+                `);
+            } else {
+                mobileMenu.addClass('hidden');
+                menuButton.html(`
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                </svg>
+                `);
+            }
             });
 
-            window.addEventListener('resize', function () {
-                if (window.innerWidth >= 768) { // 768px é o breakpoint md do Tailwind
-                    mobileMenu.classList.add('hidden');
-                    menuButton.innerHTML = `
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
-                        </svg>
-                    `;
-                }
+            $(window).on('resize', function () {
+            if ($(window).width() >= 768) { // 768px é o breakpoint md do Tailwind
+                mobileMenu.addClass('hidden');
+                menuButton.html(`
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                </svg>
+                `);
+            }
             });
         });
     </script>
