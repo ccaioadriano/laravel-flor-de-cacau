@@ -75,21 +75,33 @@ class ProductService
             return true;
         } catch (\Exception $e) {
             \Log::error('Erro ao deletar produto: ' . $e->getMessage());
+            return false;
         }
+    }
 
-        return false;
+
+    public function likeProduct($categoryId, $productId)
+    {
+        try {
+            $product = Product::findOrFail($productId);
+            $category = Category::findOrFail($categoryId);
+            $product->update(['category_id' => $category->id]);
+            return true;
+        } catch (\Throwable $e) {
+            \Log::error('Erro ao vincular produto: ' . $e->getMessage());
+            return false;
+        }
     }
 
     public function unlikeProduct($id)
     {
         try {
             $product = Product::findOrFail($id);
-            \Log::error('Erro ao desvincular produto: ' . $product);
             $product->update(['category_id' => null]);
             return true;
         } catch (\Exception $e) {
             \Log::error('Erro ao desvincular produto: ' . $e->getMessage());
+            return false;
         }
-        return false;
     }
 }

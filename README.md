@@ -48,12 +48,13 @@ Projeto desenvolvido com o intuito de facilitar a venda de doces na região ofer
 - [x] Implementar possibilidade de excluir produtos
 - [ ] Possibilidade de gerar relatórios
 - [x] Adicionar menu responsivo
-- [ ] Implementar CRUD de categorias
+- [x] Implementar CRUD de categorias
     - [x] Criar tabela de categorias
     - [x] Implementar Adicionar lista de categorias (*com produtos) no catalogo
     - [x] Implementar vinculo de produtos -> categoria
-    - [ ] Adicionar produtos de uma categoria
+    - [x] Adicionar produtos de uma categoria
     - [x] Remover produtos de uma categoria
+- [ ] Implementar pesquisa dinâmica no painel admin
 - [ ] Melhorar painel admin (qtd_doces x categoria)
 
 

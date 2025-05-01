@@ -20,37 +20,28 @@
 
                         <!-- Lista de Doces -->
                         <div class="h-96 overflow-y-auto p-4">
-                            <!-- Cada doce terá um dropdown para selecionar a categoria -->
-                            <div class="flex items-center justify-between p-3 hover:bg-gray-50 border-b">
-                                <span class="text-gray-700">Doce de Maracujá</span>
-                                <select
-                                    class="border rounded-lg px-3 py-1 text-sm text-gray-700 focus:ring-2 focus:ring-blue-500 focus:outline-none">
-                                    <option value="">Selecionar categoria...</option>
-                                    <option value="1">Chocolates</option>
-                                    <option value="2">Frutas</option>
-                                    <option value="3">Coco</option>
-                                    <option value="4">Tradicionais</option>
-                                </select>
-                            </div>
 
-                            <div class="flex items-center justify-between p-3 hover:bg-gray-50 border-b">
-                                <span class="text-gray-700">Brigadeiro</span>
-                                <select
-                                    class="border rounded-lg px-3 py-1 text-sm text-gray-700 focus:ring-2 focus:ring-blue-500 focus:outline-none">
-                                    <option value="">Selecionar categoria...</option>
-                                    <option value="1">Chocolates</option>
-                                    <option value="2">Frutas</option>
-                                    <option value="3">Coco</option>
-                                    <option value="4">Tradicionais</option>
-                                </select>
-                            </div>
+                            @foreach ($products as $product)
+                                <!-- Cada doce terá um dropdown para selecionar a categoria -->
+                                <div class="flex items-center justify-between p-3 hover:bg-gray-50 border-b">
+                                    <span class="text-gray-700">{{ $product->title }}</span>
+                                    <select
+                                        class="border rounded-lg px-3 py-1 text-sm text-gray-700 focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                                        onchange="linkProductToCategory({{$product->id}}, this.value)">
+                                        <option value="">Selecione...</option>
 
-                            <!-- Mais doces... -->
+                                        @foreach ($categories as $category)
+                                            <option value="{{$category->id}}">
+                                                {{$category->name}}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            @endforeach
+
                         </div>
                     </div>
                 </div>
-
-                <!-- Categorias -->
                 <div>
                     <h3 class="text-lg font-medium text-gray-700 mb-4">Categorias</h3>
                     <div class="space-y-4">
@@ -68,7 +59,8 @@
                                             <span
                                                 class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm flex items-center">
                                                 <span class="mr-2">{{$product->title}}</span>
-                                                <button class="ml-2 text-blue-600 hover:text-blue-800" onclick="unlikeProduct({{$product->id}})">
+                                                <button class="ml-2 text-blue-600 hover:text-blue-800"
+                                                    onclick="unlikeProduct({{$product->id}})">
                                                     <i class="fas fa-times"></i>
                                                 </button>
                                             </span>
@@ -94,7 +86,7 @@
 @endsection
 @push('script')
     <script>
-        function unlikeProduct(id){
+        function unlikeProduct(id) {
             $.ajax({
                 url: "/unlike-product/" + id,
                 type: "PUT",
@@ -102,13 +94,33 @@
                     id: id,
                     _token: "{{ csrf_token() }}"
                 },
-                success: function(response) {
+                success: function (response) {
                     console.log(response);
                     window.location.reload();
                 },
-                error: function(xhr, status, error) {
+                error: function (xhr, status, error) {
                     console.error(error);
                     alert("Erro ao desassociar o produto.");
+                }
+            });
+        }
+
+        function linkProductToCategory(product_id, category_id) {
+
+            $.ajax({
+                url: "/link-product-to-category/" + product_id,
+                type: "PUT",
+                data: {
+                    id: product_id,
+                    category_id: category_id,
+                    _token: "{{ csrf_token() }}"
+                },
+                success: function (response) {
+                    window.location.reload();
+                },
+                error: function (xhr, status, error) {
+                    console.error(error);
+                    alert("Erro ao vincular o produto à categoria.");
                 }
             });
         }
