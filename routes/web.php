@@ -14,6 +14,7 @@ Route::get('/login', [AuthController::class, 'showLoginForm']);
 Route::post('/login', [AuthController::class, 'login'])->name('login');
 
 Route::get('/dashboard',[DashboardController::class, 'index'])->name('dashboard')->middleware('auth');
+Route::get('/dashboard/search', [DashboardController::class, 'search'])->name('dashboard.search')->middleware('auth');
 
 Route::middleware(['auth'])->post('/logout', [AuthController::class, 'logout'])->name('logout');
 Route::middleware(['auth'])->put('updateProduct/{product}', [ProductController::class, 'updateProduct'])->name('updateProduct');

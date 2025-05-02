@@ -234,7 +234,6 @@
             phoneClean: "{{ config('contact.phone_clean') }}"
         }
     </script>
-    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <script src={{ asset('plugins/jquery.maskMoney.js') }} type="text/javascript"></script>
     <script src="{{ asset('js/utils.js') }}" defer></script>
     <script src="{{ asset('js/scripts.js') }}" defer></script>
