@@ -1,64 +1,64 @@
 @extends('layouts.main')
 @section('content')
     <div class="container mx-auto px-6 py-8 min-h-[780px]" x-data="{
-                                                search: '',
-                                                products: {{ Js::from($products) }},
-                                                categories: {{ Js::from($categories) }},
-                                                loading: false,
+                                                    search: '',
+                                                    products: {{ Js::from($products) }},
+                                                    categories: {{ Js::from($categories) }},
+                                                    loading: false,
 
-                                                async filterProducts() {
-                                                    this.loading = true;
-                                                    try {
-                                                        const response = await fetch(`/dashboard/search?search=${this.search}`);
-                                                        const data = await response.json();
-                                                        this.products = data;
-                                                    } catch (error) {
-                                                        console.error('Erro:', error);
-                                                    }
-                                                    this.loading = false;
-                                                },
-
-                                                async linkProductToCategory(productId, categoryId) {
-                                                    try {
-                                                        const response = await fetch(`/link-product-to-category/${productId}`, {
-                                                            method: 'PUT',
-                                                            headers: {
-                                                                'Content-Type': 'application/json',
-                                                                'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                                                            },
-                                                            body: JSON.stringify({
-                                                                category_id: categoryId
-                                                            })
-                                                        });
-
-                                                        if (response.ok) {
-                                                            window.location.reload();
+                                                    async filterProducts() {
+                                                        this.loading = true;
+                                                        try {
+                                                            const response = await fetch(`/dashboard/search?search=${this.search}`);
+                                                            const data = await response.json();
+                                                            this.products = data;
+                                                        } catch (error) {
+                                                            console.error('Erro:', error);
                                                         }
-                                                    } catch (error) {
-                                                        console.error('Erro:', error);
-                                                        alert('Erro ao vincular produto à categoria');
-                                                    }
-                                                },
+                                                        this.loading = false;
+                                                    },
 
-                                                async unlikeProduct(productId) {
-                                                    try {
-                                                        const response = await fetch(`/unlike-product/${productId}`, {
-                                                            method: 'PUT',
-                                                            headers: {
-                                                                'Content-Type': 'application/json',
-                                                                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                                                    async linkProductToCategory(productId, categoryId) {
+                                                        try {
+                                                            const response = await fetch(`/link-product-to-category/${productId}`, {
+                                                                method: 'PUT',
+                                                                headers: {
+                                                                    'Content-Type': 'application/json',
+                                                                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                                                                },
+                                                                body: JSON.stringify({
+                                                                    category_id: categoryId
+                                                                })
+                                                            });
+
+                                                            if (response.ok) {
+                                                            window.location.reload();
                                                             }
-                                                        });
-
-                                                        if (response.ok) {
-                                                            window.location.reload();
+                                                        } catch (error) {
+                                                            console.error('Erro:', error);
+                                                            alert('Erro ao vincular produto à categoria');
                                                         }
-                                                    } catch (error) {
-                                                        console.error('Erro:', error);
-                                                        alert('Erro ao desvincular produto');
+                                                    },
+
+                                                    async unlinkProduct(productId) {
+                                                        try {
+                                                            const response = await fetch(`/unlink-product/${productId}`, {
+                                                                method: 'PUT',
+                                                                headers: {
+                                                                    'Content-Type': 'application/json',
+                                                                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                                                                }
+                                                            });
+
+                                                            if (response.ok) {
+                                                                window.location.reload();
+                                                            }
+                                                        } catch (error) {
+                                                            console.error('Erro:', error);
+                                                            alert('Erro ao desvincular produto');
+                                                        }
                                                     }
-                                                }
-                                            }">
+                                                }">
         <h1 class="text-3xl font-semibold text-gray-800 mb-8">Painel Administrativo</h1>
 
         <!-- Seção de Vinculação de Doces às Categorias -->
@@ -120,7 +120,7 @@
                                                 class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm flex items-center">
                                                 <span class="mr-2" x-text="product.title"></span>
                                                 <button class="ml-2 text-blue-600 hover:text-blue-800"
-                                                    @click="unlikeProduct(product.id)">
+                                                    @click="unlinkProduct(product.id)">
                                                     <i class="fas fa-times"></i>
                                                 </button>
                                             </span>

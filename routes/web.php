@@ -21,5 +21,5 @@ Route::middleware(['auth'])->put('updateProduct/{product}', [ProductController::
 Route::middleware(['auth'])->put('updateImage/{product}', [ProductController::class, 'updateImage'])->name('updateImage');
 Route::middleware(['auth'])->put('updatePrice/{product}', [ProductController::class, 'updatePrice'])->name('updatePrice');
 Route::middleware(['auth'])->delete('updatePrice/{product}/delete', [ProductController::class, 'deleteProduct'])->name('deleteProduct');
-Route::middleware(['auth'])->put('unlike-product/{product}', [DashboardController::class, 'unlikeProduct'])->name('unlikeProduct');
-Route::middleware(['auth'])->put('link-product-to-category/{product}', [DashboardController::class, 'likeProduct'])->name('likeProduct');
+Route::middleware(['auth'])->put('unlink-product/{product}', [DashboardController::class, 'unlinkProduct'])->name('unlinkProduct');
+Route::middleware(['auth'])->put('link-product-to-category/{product}', [DashboardController::class, 'linkProduct'])->name('linkProduct');

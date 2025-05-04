@@ -47,6 +47,7 @@ Projeto desenvolvido com o intuito de facilitar a venda de doces na região ofer
 
 ## Pendências
 
+- [ ] Implementar testes
 - [x] Implementar possibilidade de excluir produtos
 - [ ] Possibilidade de gerar relatórios
 - [x] Adicionar menu responsivo
@@ -56,6 +57,10 @@ Projeto desenvolvido com o intuito de facilitar a venda de doces na região ofer
     - [x] Implementar vinculo de produtos -> categoria
     - [x] Adicionar produtos de uma categoria
     - [x] Remover produtos de uma categoria
+    - [ ] Criar uma categoria
+    - [ ] Editar categoria
+    - [ ] Excluir categoria
+- [ ] Implementar categorias temporárias (ex:pascoa, natal...)
 - [x] Implementar pesquisa dinâmica no painel admin
 - [ ] Adicionar eager loading nas consultas
 - [ ] Melhorar painel admin (qtd_doces x categoria)

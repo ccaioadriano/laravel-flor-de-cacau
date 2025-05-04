@@ -30,7 +30,6 @@ class ProductService
         } catch (\Exception $e) {
             \Log::error('Erro ao buscar produtos: ' . $e->getMessage());
 
-            // Fallback em caso de erro no cache
             $products = Product::select(['id', 'title', 'description', 'price', 'image'])
                 ->latest()
                 ->paginate(self::PER_PAGE);
@@ -80,7 +79,7 @@ class ProductService
     }
 
 
-    public function likeProduct($categoryId, $productId)
+    public function linkProduct($categoryId, $productId)
     {
         try {
             $product = Product::findOrFail($productId);
@@ -93,7 +92,7 @@ class ProductService
         }
     }
 
-    public function unlikeProduct($id)
+    public function unlinkProduct($id)
     {
         try {
             $product = Product::findOrFail($id);
