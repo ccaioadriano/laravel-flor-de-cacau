@@ -12,6 +12,8 @@ Projeto desenvolvido com o intuito de facilitar a venda de doces na região ofer
 ### Funcionalidades do Admin
 - Alterar imagem do produto
 - Alterar o preço
+- Atribuir doces as categorias
+- Remover doces de suas categorias
 
 
 ### Imagens do Projeto
