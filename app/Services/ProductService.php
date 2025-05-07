@@ -103,4 +103,25 @@ class ProductService
             return false;
         }
     }
+
+    public function searchProduct($search)
+    {
+        $query = Product::query();
+
+        $query->where('category_id', null);
+
+        if (!empty($search)) {
+            $query->where(function ($query) use ($search) {
+                $query->where('title', 'like', "%$search%");
+            });
+        }
+
+        return $query->get();
+    }
+
+    public function getProductsWithoutCategory()
+    {
+        return Product::where('category_id', null)
+            ->get();
+    }
 }

@@ -82,6 +82,10 @@
                             <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500 mx-auto"></div>
                         </div>
 
+                        <div x-show="products.length === 0" class="p-4 text-center">
+                            <p class="text-gray-500">Nenhum doce encontrado.</p>
+                        </div>
+
                         <!-- Lista de Doces -->
                         <div class="h-96 overflow-y-auto p-4" id="products-container">
                             <template x-for="product in products" :key="product . id">

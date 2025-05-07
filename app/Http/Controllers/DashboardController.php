@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Category;
-use App\Models\Product;
+use App\Http\Requests\SearchRequest;
+use App\Services\CategoryService;
 use App\Services\ProductService;
 use Illuminate\Http\Request;
 use Log;
@@ -11,39 +11,24 @@ use Log;
 class DashboardController extends Controller
 {
 
-    public function __construct(protected ProductService $productService)
+    public function __construct(protected ProductService $productService, protected CategoryService $categoryService)
     {
 
     }
 
     public function index(Request $request)
     {
-        $categories = Category::with('products')->get();
+        $categories = $this->categoryService->getCategories();
 
-        $query = Product::query();
-
-        $query->where('category_id', null);
-
-        $products = $query->get();
+        $products = $this->productService->getProductsWithoutCategory();
 
         return view('pages.dashboard', compact('categories', 'products'));
     }
 
 
-    public function search(Request $request)
+    public function search(SearchRequest $request)
     {
-        $query = Product::query();
-
-        $query->where('category_id', null);
-
-        if ($request->has('search')) {
-            $search = $request->input('search');
-            $query->where(function ($query) use ($search) {
-                $query->where('title', 'like', "%$search%");
-            });
-        }
-
-        $products = $query->get();
+        $products = $this->productService->searchProduct($request->search);
 
         return response()->json($products);
     }

@@ -13,12 +13,13 @@ class Category extends Model
         'name',
         'slug',
     ];
+
+    protected $with = [
+        'products',
+    ];
+    
     public function products()
     {
         return $this->hasMany(Product::class);
-    }
-
-    public function getCountProducts(): int{
-        return $this->products()->count();
     }
 }

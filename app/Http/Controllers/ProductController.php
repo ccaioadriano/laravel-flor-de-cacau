@@ -5,15 +5,14 @@ namespace App\Http\Controllers;
 use App\Http\Requests\RequestUpdateImage;
 use App\Http\Requests\RequestUpdatePrice;
 use App\Http\Requests\RequestUpdateProduct;
-use App\Models\Category;
-use App\Models\Product;
+use App\Services\CategoryService;
 use App\Services\ProductService;
 use Illuminate\Http\Request;
 
 class ProductController extends Controller
 {
 
-    public function __construct(protected ProductService $productService)
+    public function __construct(protected ProductService $productService, protected CategoryService $categoryService)
     {
     }
 
@@ -23,9 +22,7 @@ class ProductController extends Controller
 
         $products = $this->productService->getProducts($filter);
 
-        $categories = Category::whereIn('id', Product::where('category_id', '!=', 'null')->pluck('category_id'))
-            ->select(['id', 'name', 'slug'])
-            ->get();
+        $categories = $this->categoryService->getCategoriesWithProducts();
 
         return view('welcome', compact('products', 'categories'));
     }
