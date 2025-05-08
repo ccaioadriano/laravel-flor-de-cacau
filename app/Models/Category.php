@@ -13,10 +13,6 @@ class Category extends Model
         'name',
         'slug',
     ];
-
-    protected $with = [
-        'products',
-    ];
     
     public function products()
     {

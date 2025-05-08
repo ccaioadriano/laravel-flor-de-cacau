@@ -82,7 +82,7 @@
                             <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500 mx-auto"></div>
                         </div>
 
-                        <div x-show="products.length === 0" class="p-4 text-center">
+                        <div x-show="products?.length === 0" class="p-4 text-center">
                             <p class="text-gray-500">Nenhum doce encontrado.</p>
                         </div>
 
@@ -109,17 +109,17 @@
                 <div>
                     <h3 class="text-lg font-medium text-gray-700 mb-4">Categorias</h3>
                     <div class="space-y-4">
-                        <template x-for=" category in categories" :key="category . id">
+                        <template x-for="category in categories" :key="category . id">
                             <div class="border rounded-lg p-4">
                                 <div class="flex items-center justify-between mb-2">
                                     <h4 class="font-medium text-gray-800" x-text="category.name"></h4>
                                     <span class="text-sm text-gray-500"
-                                        x-text="category.products.length + (category.products.length === 1 ? ' Doce' : ' Doces')">
+                                        x-text="category.products?.length + (category?.products?.length === 1 ? ' Doce' : ' Doces')">
                                     </span>
                                 </div>
                                 <div class="bg-gray-50 p-3 rounded-lg">
                                     <div class="flex flex-wrap gap-2">
-                                        <template x-for="product in category.products" :key="product . id">
+                                        <template x-for="product in category?.products" :key="product . id">
                                             <span
                                                 class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm flex items-center">
                                                 <span class="mr-2" x-text="product.title"></span>

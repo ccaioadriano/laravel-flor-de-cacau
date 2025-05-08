@@ -65,7 +65,7 @@
                                                 class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
                                                 <i class="fas fa-tag mr-2"></i> Alterar Preço
                                             </button>
-                                            <form action="{{ route('deleteProduct', [$product->id]) }}" method="POST" class="block">
+                                            <form action="{{ route('delete_product', [$product->id]) }}" method="POST" class="block">
                                                 @csrf
                                                 @method('DELETE')
                                                 <button type="submit"
@@ -110,7 +110,7 @@
                         <div class="bg-white rounded-lg shadow-xl max-w-md w-full">
                             <div class="p-6">
                                 <h3 class="text-lg font-semibold text-[#143151] mb-4">Alterar Imagem</h3>
-                                <form action="{{ route('updateImage', [$product->id]) }}" method="POST"
+                                <form action="{{ route('update_image', [$product->id]) }}" method="POST"
                                     enctype="multipart/form-data">
                                     @csrf
                                     @method('PUT')
@@ -141,7 +141,7 @@
                         <div class="bg-white rounded-lg shadow-xl max-w-md w-full">
                             <div class="p-6">
                                 <h3 class="text-lg font-semibold text-[#143151] mb-4">Alterar Preço</h3>
-                                <form action="{{ route('updatePrice', [$product->id]) }}" method="POST">
+                                <form action="{{ route('update_price', [$product->id]) }}" method="POST">
                                     @csrf
                                     @method('PUT')
                                     <div class="mb-4">

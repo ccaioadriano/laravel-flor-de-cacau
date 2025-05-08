@@ -105,7 +105,7 @@ class ProductService
     }
 
     public function searchProduct($search)
-    {
+    { 
         $query = Product::query();
 
         $query->where('category_id', null);
@@ -115,7 +115,6 @@ class ProductService
                 $query->where('title', 'like', "%$search%");
             });
         }
-
         return $query->get();
     }
 
