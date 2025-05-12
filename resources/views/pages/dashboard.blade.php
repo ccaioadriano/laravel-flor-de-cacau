@@ -60,7 +60,6 @@
                                                     }
                                                 }">
         <h1 class="text-3xl font-semibold text-gray-800 mb-8">Painel Administrativo</h1>
-
         <!-- Seção de Vinculação de Doces às Categorias -->
         <div class="bg-white rounded-lg shadow p-6 mb-8">
             <h2 class="text-xl font-semibold text-gray-800 mb-6">Vincular Doces às Categorias</h2>

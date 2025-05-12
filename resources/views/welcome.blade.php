@@ -13,19 +13,34 @@
         </div>
     </section>
 
+    <!-- Notificação -->
+    <div x-data="{ show: {{ session()->has('success') ? 'true' : 'false' }} }" x-show="show"
+        x-init="setTimeout(() => { show = false }, 3000)" @click="show = false"
+        class="fixed top-20 right-4 bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg cursor-pointer transform transition-all duration-500 ease-in-out z-50"
+        x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 transform translate-x-8"
+        x-transition:enter-end="opacity-100 transform translate-x-0" x-transition:leave="transition ease-in duration-300"
+        x-transition:leave-start="opacity-100 transform translate-x-0"
+        x-transition:leave-end="opacity-0 transform translate-x-8">
+        <div class="flex items-center space-x-2">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+            </svg>
+            <span>{{ session('success') }}</span>
+        </div>
+    </div>
     <!-- Produtos -->
     <section id="produtos" class="container mx-auto px-6 py-16">
         <h2 class="text-3xl font-bold text-center text-[#143151] mb-12">Nossos Produtos</h2>
 
         <div class="mb-8 flex justify-center">
-            <div class="inline-flex rounded-md shadow-sm" role="group">
+            <div class="flex flex-col space-y-2 sm:space-y-0 sm:flex-row sm:space-x-2 rounded-md shadow-sm" role="group">
                 <a href="{{ route('home', ['category' => 'all']) }}"
-                    class="filter-btn px-4 py-2 text-sm font-medium {{ (request()->category === 'all') || !request()->category ? 'bg-[#143151] text-white' : 'bg-gray-200 text-gray-700  hover:bg-gray-300' }} rounded">
+                    class="filter-btn px-4 py-2 text-sm font-medium text-center {{ (request()->category === 'all') || !request()->category ? 'bg-[#143151] text-white' : 'bg-gray-200 text-gray-700 hover:bg-gray-300' }} rounded">
                     Todos
                 </a>
                 @foreach ($categories as $category)
                     <a href="{{ route('home', ['category' => $category->slug]) }}"
-                        class="filter-btn px-4 py-2 text-sm font-medium {{ request()->category == $category->slug ? 'bg-[#143151] text-white' : 'bg-gray-200 text-gray-700 hover:bg-gray-300' }} rounded">
+                        class="filter-btn px-4 py-2 text-sm font-medium text-center {{ request()->category == $category->slug ? 'bg-[#143151] text-white' : 'bg-gray-200 text-gray-700 hover:bg-gray-300' }} rounded">
                         {{ $category->name }}
                     </a>
                 @endforeach
@@ -65,7 +80,8 @@
                                                 class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
                                                 <i class="fas fa-tag mr-2"></i> Alterar Preço
                                             </button>
-                                            <form action="{{ route('delete_product', [$product->id]) }}" method="POST" class="block">
+                                            <form action="{{ route('delete_product', [$product->id]) }}" method="POST"
+                                                class="block">
                                                 @csrf
                                                 @method('DELETE')
                                                 <button type="submit"

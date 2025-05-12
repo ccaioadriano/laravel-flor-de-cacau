@@ -71,6 +71,7 @@
             }
         }
     </style>
+    @stack('css')
 
     <!-- Schema.org markup para negócio local -->
     <script type="application/ld+json">
@@ -226,33 +227,33 @@
             const mobileMenu = $('#mobileMenu');
 
             menuButton.on('click', function () {
-            // Toggle do menu mobile
-            if (mobileMenu.hasClass('hidden')) {
-                mobileMenu.removeClass('hidden');
-                menuButton.html(`
+                // Toggle do menu mobile
+                if (mobileMenu.hasClass('hidden')) {
+                    mobileMenu.removeClass('hidden');
+                    menuButton.html(`
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
                 </svg>
                 `);
-            } else {
-                mobileMenu.addClass('hidden');
-                menuButton.html(`
+                } else {
+                    mobileMenu.addClass('hidden');
+                    menuButton.html(`
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
                 </svg>
                 `);
-            }
+                }
             });
 
             $(window).on('resize', function () {
-            if ($(window).width() >= 768) { // 768px é o breakpoint md do Tailwind
-                mobileMenu.addClass('hidden');
-                menuButton.html(`
+                if ($(window).width() >= 768) { // 768px é o breakpoint md do Tailwind
+                    mobileMenu.addClass('hidden');
+                    menuButton.html(`
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
                 </svg>
                 `);
-            }
+                }
             });
         });
     </script>

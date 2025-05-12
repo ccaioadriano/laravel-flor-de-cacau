@@ -4,6 +4,7 @@ namespace App\Services;
 use App\Models\Category;
 use App\Models\Product;
 use Cache;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Storage;
 
 class ProductService
@@ -14,7 +15,7 @@ class ProductService
     public function getProducts($filter)
     {
         try {
-            $products = Cache::remember('products', 60, function () {
+            $products = Cache::remember('all_products', 60, function () {
                 return Product::select(['id', 'title', 'description', 'price', 'image'])
                     ->latest()
                     ->get();
@@ -25,7 +26,19 @@ class ProductService
                 return $productsByCategory->products()->paginate(self::PER_PAGE);
             }
 
-            return $products->paginate(self::PER_PAGE);
+            $currentPage = request()->get('page', 1);
+            $items = $products->forPage($currentPage, self::PER_PAGE);
+
+            return new LengthAwarePaginator(
+                $items,
+                $products->count(),
+                self::PER_PAGE,
+                $currentPage,
+                [
+                    'path' => request()->url(),
+                    'query' => request()->query()
+                ]
+            );
 
         } catch (\Exception $e) {
             \Log::error('Erro ao buscar produtos: ' . $e->getMessage());
@@ -35,6 +48,29 @@ class ProductService
                 ->paginate(self::PER_PAGE);
 
             return $products;
+        }
+    }
+
+    public function createProduct(array $data)
+    {
+        try {
+            $data['price'] = preg_replace('/[^0-9]/', '', $data['price']);
+            $product = Product::create($data);
+
+            if (array_key_exists('image', $data)) {
+
+                Storage::disk('public')->putFileAs(
+                    'images',
+                    $data['image'],
+                    $data['image']->getClientOriginalName()
+                );
+                $product->update(['image' => $data['image']->getClientOriginalName()]);
+            }
+
+            return $product;
+        } catch (\Exception $e) {
+            \Log::error('Erro ao criar produto: ' . $e->getMessage());
+            return false;
         }
     }
 
@@ -105,7 +141,7 @@ class ProductService
     }
 
     public function searchProduct($search)
-    { 
+    {
         $query = Product::query();
 
         $query->where('category_id', null);

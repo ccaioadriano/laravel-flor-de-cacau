@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\RequestCreateProduct;
 use App\Http\Requests\RequestUpdateImage;
 use App\Http\Requests\RequestUpdatePrice;
 use App\Http\Requests\RequestUpdateProduct;
@@ -25,6 +26,23 @@ class ProductController extends Controller
         $categories = $this->categoryService->getCategoriesWithProducts();
 
         return view('welcome', compact('products', 'categories'));
+    }
+
+    public function create()
+    {
+        return view('pages.product.create');
+    }
+
+    public function store(RequestCreateProduct $request) {
+        $fields = $request->validated();
+
+        $product = $this->productService->createProduct($fields);
+
+        if (!$product) {
+            return redirect()->back()->with('error', 'Falha ao criar o produto.');
+        }
+
+        return redirect()->route('home')->with('success', 'Produto criado com sucesso!');
     }
 
     public function updateProduct(RequestUpdateProduct $request, $id)
