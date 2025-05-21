@@ -47,7 +47,7 @@ Projeto desenvolvido com o intuito de facilitar a venda de doces na região ofer
 
 ## Pendências
 
-- [ ] Implementar testes
+- [x] Implementar testes
 - [x] Implementar possibilidade de excluir produtos
 - [ ] Possibilidade de gerar relatórios
 - [x] Adicionar menu responsivo
