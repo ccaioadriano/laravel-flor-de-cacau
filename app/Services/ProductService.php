@@ -54,7 +54,7 @@ class ProductService
     public function createProduct(array $data)
     {
         try {
-            $data['price'] = preg_replace('/[^0-9]/', '', $data['price']);
+            $data['price'] = (int)preg_replace('/[^0-9]/', '', $data['price']);
             $product = Product::create($data);
 
             if (array_key_exists('image', $data)) {
@@ -78,23 +78,22 @@ class ProductService
     {
         try {
             $product = Product::findOrFail($id);
-
+    
             if (array_key_exists('image', $data)) {
-
-                //armazena no storage
                 Storage::disk('public')->putFileAs(
                     'images',
                     $data['image'],
                     $data['image']->getClientOriginalName()
                 );
-                $product->update(['image' => $data['image']->getClientOriginalName()]);
-            } elseif (array_key_exists('price', $data)) {
-                $price = preg_replace('/[^0-9]/', '', $data['price']);
-                $product->update(['price' => $price]);
-            } else {
-                $product->update($data);
+                $data['image'] = $data['image']->getClientOriginalName();
             }
-
+    
+            if (array_key_exists('price', $data)) {
+                $data['price'] = (int)preg_replace('/[^0-9]/', '', $data['price']);
+            }
+    
+            $product->update($data);
+    
             return $product;
         } catch (\Exception $e) {
             \Log::error('Erro ao atualizar produto: ' . $e->getMessage());

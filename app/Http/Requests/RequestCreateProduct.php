@@ -24,7 +24,7 @@ class RequestCreateProduct extends FormRequest
         return [
             'title' => 'required|string|max:255',
             'description' => 'required|string|max:1000',
-            'price' => 'required',
+            'price' => 'required|numeric|min:0',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'category_id' => 'nullable|exists:categories,id',
         ];
