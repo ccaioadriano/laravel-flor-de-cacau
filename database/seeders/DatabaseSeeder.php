@@ -17,11 +17,18 @@ class DatabaseSeeder extends Seeder
     {
         // \App\Models\User::factory(10)->create();
         
-        Category::factory(5)->create()->each(function ($category) {
-            // Pra cada categoria, cria 10 produtos relacionados
-            Product::factory(10)->create([
-                'category_id' => $category->id,
-            ]);
-        });
+        // Category::factory(5)->create()->each(function ($category) {
+        //     // Pra cada categoria, cria 10 produtos relacionados
+        //     Product::factory(10)->create([
+        //         'category_id' => $category->id,
+        //     ]);
+        // });
+
+        // Cria um usuário administrador
+        User::factory()->create([
+            'name' => 'Admin',
+            'email' => 'caio@gmail.com',
+            'password' => bcrypt('12345678'),
+        ]);
     }
 }

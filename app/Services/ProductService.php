@@ -15,46 +15,44 @@ class ProductService
     public function getProducts($filter)
     {
         try {
-            $products = Cache::remember('all_products', 60, function () {
-                return Product::select(['id', 'title', 'description', 'price', 'image'])
-                    ->latest()
-                    ->get();
-            });
-
             if ($filter !== 'all') {
-                $productsByCategory = Category::where('slug', $filter)->first();
-                return $productsByCategory->products()->paginate(self::PER_PAGE);
+              
+                $category = Category::with([
+                    'products' => function ($query) {
+                        $query->select(['id', 'title', 'description', 'price', 'image', 'category_id'])
+                            ->latest();
+                    }
+                ])->where('slug', $filter)->first();
+
+                if (!$category) {
+                    throw new \Exception('Categoria não encontrada: ' . $filter);
+                }
+
+                // Usa paginação direta do relacionamento
+                return $category->products()
+                    ->select(['id', 'title', 'description', 'price', 'image'])
+                    ->latest()
+                    ->paginate(self::PER_PAGE);
             }
 
-            $currentPage = request()->get('page', 1);
-            $items = $products->forPage($currentPage, self::PER_PAGE);
-
-            return new LengthAwarePaginator(
-                $items,
-                $products->count(),
-                self::PER_PAGE,
-                $currentPage,
-                [
-                    'path' => request()->url(),
-                    'query' => request()->query()
-                ]
-            );
+            // Para 'all', usa cache com paginação direta
+            return Product::select(['id', 'title', 'description', 'price', 'image'])
+                ->latest()
+                ->paginate(self::PER_PAGE);
 
         } catch (\Exception $e) {
             \Log::error('Erro ao buscar produtos: ' . $e->getMessage());
 
-            $products = Product::select(['id', 'title', 'description', 'price', 'image'])
+            return Product::select(['id', 'title', 'description', 'price', 'image'])
                 ->latest()
                 ->paginate(self::PER_PAGE);
-
-            return $products;
         }
     }
 
     public function createProduct(array $data)
     {
         try {
-            $data['price'] = (int)preg_replace('/[^0-9]/', '', $data['price']);
+            $data['price'] = (int) preg_replace('/[^0-9]/', '', $data['price']);
             $product = Product::create($data);
 
             if (array_key_exists('image', $data)) {
@@ -78,7 +76,7 @@ class ProductService
     {
         try {
             $product = Product::findOrFail($id);
-    
+
             if (array_key_exists('image', $data)) {
                 Storage::disk('public')->putFileAs(
                     'images',
@@ -87,13 +85,13 @@ class ProductService
                 );
                 $data['image'] = $data['image']->getClientOriginalName();
             }
-    
+
             if (array_key_exists('price', $data)) {
-                $data['price'] = (int)preg_replace('/[^0-9]/', '', $data['price']);
+                $data['price'] = (int) preg_replace('/[^0-9]/', '', $data['price']);
             }
-    
+
             $product->update($data);
-    
+
             return $product;
         } catch (\Exception $e) {
             \Log::error('Erro ao atualizar produto: ' . $e->getMessage());
