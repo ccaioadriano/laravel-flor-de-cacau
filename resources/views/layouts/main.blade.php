@@ -28,6 +28,7 @@
     <meta property="twitter:description"
         content="Descubra os deliciosos doces artesanais da Flor de Cacau. Brigadeiros, bolos e sobremesas feitos com ingredientes selecionados.">
     <meta property="twitter:image" content="https://www.flordecacau.com/images/twitter-image.jpg">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 
     @yield('meta')
 

@@ -128,6 +128,34 @@ function checkout() {
         return;
     }
 
+    $.ajax({
+        url: "/checkout",
+        method: "POST",
+        data: {
+            items: cart,
+            _token: $('meta[name="csrf-token"]').attr("content"),
+        },
+        success: function (response) {
+            if (response.url) {
+                // Redireciona para o Stripe Checkout
+                window.location.href = response.url;
+            } else {
+                alert("Erro ao criar sessão de checkout.");
+            }
+        },
+        error: function () {
+            alert("Erro ao realizar o checkout. Tente novamente.");
+        },
+    });
+}
+
+// ver alguma forma de implementar o checkout via WhatsApp
+function checkoutViaWhatsapp() {
+    if (cart.length === 0) {
+        alert("Seu carrinho está vazio!");
+        return;
+    }
+
     let message = "Olá! Gostaria de fazer o seguinte pedido:\n\n";
 
     cart.forEach((item) => {
@@ -143,7 +171,6 @@ function checkout() {
     message += `\nTotal: ${Utils.formatCurrency(total)}`;
 
     Utils.sendMessageWhatsapp(message, `${window.config.phoneClean}`);
-
     clearCart();
     closeCartModal();
 }

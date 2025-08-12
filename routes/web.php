@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProductController;
 use Illuminate\Support\Facades\Route;
@@ -25,3 +26,8 @@ Route::middleware(['auth'])->put('updatePrice/{product}', [ProductController::cl
 Route::middleware(['auth'])->delete('deleteProduct/{product}/delete', [ProductController::class, 'deleteProduct'])->name('delete_product');
 Route::middleware(['auth'])->put('unlink-product/{product}', [DashboardController::class, 'unlinkProduct'])->name('unlink_product');
 Route::middleware(['auth'])->put('link-product-to-category/{product}', [DashboardController::class, 'linkProduct'])->name('link_product');
+
+Route::post('/checkout', [CheckoutController::class, 'checkout'])->name('checkout');
+ 
+Route::get('/checkout/success', [CheckoutController::class, 'success'])->name('checkout-success');
+Route::view('/checkout/cancel', 'checkout.cancel')->name('checkout-cancel');

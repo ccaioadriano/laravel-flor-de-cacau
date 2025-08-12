@@ -51,6 +51,8 @@ Projeto desenvolvido com o intuito de facilitar a venda de doces na região ofer
 - [x] Implementar possibilidade de excluir produtos
 - [ ] Possibilidade de gerar relatórios
 - [x] Adicionar menu responsivo
+- [x] Integração com a Stripe
+- [ ] Enviar mensagem para o admin quando o pedido estiver realizado
 - [x] Implementar CRUD de categorias
     - [x] Criar tabela de categorias
     - [x] Implementar Adicionar lista de categorias (*com produtos) no catalogo
@@ -62,9 +64,9 @@ Projeto desenvolvido com o intuito de facilitar a venda de doces na região ofer
     - [ ] Excluir categoria
 - [ ] Implementar categorias temporárias (ex:pascoa, natal...)
 - [x] Implementar pesquisa dinâmica no painel admin
-- [ ] Adicionar eager loading nas consultas
-- [ ] Melhorar painel admin (qtd_doces x categoria)
-
+- [x] Adicionar eager loading nas consultas
+- [ ] Melhorar painel admin (qtd_doces x categoria) Fillament ? 
+- [ ] Corrigir a exibição das imagens do catalogo
 
 ## Contribuição
 
