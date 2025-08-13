@@ -12,11 +12,4 @@ class CategoryService
             ->select(['id', 'name', 'slug'])
             ->get();
     }
-
-    public function getCategoriesWithProducts()
-    {
-        return Category::whereIn('id', Product::where('category_id', '!=', 'null')->pluck('category_id'))
-            ->select(['id', 'name', 'slug'])
-            ->get();
-    }
 }

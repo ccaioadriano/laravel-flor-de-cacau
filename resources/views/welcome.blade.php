@@ -95,8 +95,8 @@
                                 </div>
                             @endauth
                         </div>
-
-                        <img src="{{ $product->image ? asset('storage/images/' . $product->image) : asset('img/default.png') }}"
+                        
+                        <img src="{{ $product->image ? asset('storage/'.$product->image) : asset('img/default.png') }}"
                             alt="{{ $product->title }}" class="w-full h-48 object-cover mb-4 rounded-md">
 
                         <p class="text-[#143151] font-bold mt-4">

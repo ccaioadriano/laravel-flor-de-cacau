@@ -23,6 +23,7 @@ class Product extends Model
     {
         return Attribute::make(
             get: fn ($value) => $value / 100, // Divide por 100 ao recuperar
+            set: fn ($value) => $value * 100 // Multiplica por 100 ao salvar
         );
     }
 

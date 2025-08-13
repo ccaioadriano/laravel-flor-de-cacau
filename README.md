@@ -59,14 +59,15 @@ Projeto desenvolvido com o intuito de facilitar a venda de doces na região ofer
     - [x] Implementar vinculo de produtos -> categoria
     - [x] Adicionar produtos de uma categoria
     - [x] Remover produtos de uma categoria
-    - [ ] Criar uma categoria
-    - [ ] Editar categoria
-    - [ ] Excluir categoria
+    - [x] Criar uma categoria
+    - [x] Editar categoria
+    - [x] Excluir categoria
 - [ ] Implementar categorias temporárias (ex:pascoa, natal...)
 - [x] Implementar pesquisa dinâmica no painel admin
 - [x] Adicionar eager loading nas consultas
-- [ ] Melhorar painel admin (qtd_doces x categoria) Fillament ? 
-- [ ] Corrigir a exibição das imagens do catalogo
+- [x] Melhorar painel admin
+- [x] Corrigir a exibição das imagens
+
 
 ## Contribuição
 
