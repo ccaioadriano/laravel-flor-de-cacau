@@ -73,41 +73,6 @@
         }
     </style>
     @stack('css')
-
-    <!-- Schema.org markup para negócio local -->
-    <script type="application/ld+json">
-    {
-        "@context": "https://schema.org",
-        "@type": "LocalBusiness",
-        "name": "Flor de Cacau",
-        "image": "https://www.flordecacau.com/images/logo.jpg",
-        "description": "Doces artesanais feitos com amor e dedicação em Belo Horizonte",
-        "address": {
-            "@type": "PostalAddress",
-            "streetAddress": "Endereço da Flor de Cacau",
-            "addressLocality": "Belo Horizonte",
-            "addressRegion": "MG",
-            "postalCode": "00000-000",
-            "addressCountry": "BR"
-        },
-        "geo": {
-            "@type": "GeoCoordinates",
-            "latitude": "-19.917699",
-            "longitude": "-43.934738"
-        },
-        "url": "https://www.flordecacau.com",
-        "telephone": "+55-31-99561-9393",
-        "openingHoursSpecification": [
-            {
-                "@type": "OpeningHoursSpecification",
-                "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
-                "opens": "09:00",
-                "closes": "18:00"
-            }
-        ],
-        "priceRange": "$$"
-    }
-    </script>
 </head>
 
 <body class="bg-gray-50 h-screen flex flex-col">
@@ -259,5 +224,4 @@
         });
     </script>
 </body>
-
 </html>
