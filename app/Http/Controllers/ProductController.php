@@ -23,7 +23,7 @@ class ProductController extends Controller
 
         $products = $this->productService->getProducts($filter);
 
-        $categories = $this->categoryService->getCategoriesWithProducts();
+        $categories = $this->categoryService->getCategories();
 
         return view('welcome', compact('products', 'categories'));
     }
