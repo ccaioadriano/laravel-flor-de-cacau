@@ -1,27 +1,26 @@
-
-
 ## Laravel Flor de Cacau
 
 Projeto desenvolvido com o intuito de facilitar a venda de doces na região oferecendo uma maneira rápida e fácil de fazer pedidos online.
 
 ### Funcionalidades
-- Catálogo de produtos
-- Carrinho de compras
-- Pedido pelo Whatsapp
+
+-   Catálogo de produtos
+-   Carrinho de compras
+-   Pedido pelo Whatsapp
 
 ### Funcionalidades do Admin
-- Alterar imagem do produto
-- Alterar o preço
-- Atribuir doces as categorias
-- Remover doces de suas categorias
 
+-   Alterar imagem do produto
+-   Alterar o preço
+-   Atribuir doces as categorias
+-   Remover doces de suas categorias
 
 ### Imagens do Projeto
 
-![Página inicial](public/img/home.png)
----
-![Sobre](public/img/about.png)
----
+## ![Página inicial](public/img/home.png)
+
+## ![Sobre](public/img/about.png)
+
 ![Carrginho](public/img/carrinho.png)
 
 ## Instalação
@@ -44,34 +43,51 @@ Projeto desenvolvido com o intuito de facilitar a venda de doces na região ofer
     php artisan migrate
     ```
 
+# 🚀 Roadmap - Mini E-commerce
 
-## Pendências
+## ✅ Concluído
 
-- [x] Implementar testes
-- [x] Implementar possibilidade de excluir produtos
-- [ ] Possibilidade de gerar relatórios
-- [x] Adicionar menu responsivo
-- [x] Integração com a Stripe
-- [ ] Enviar mensagem para o admin quando o pedido estiver realizado
-- [x] Implementar CRUD de categorias
-    - [x] Criar tabela de categorias
-    - [x] Implementar Adicionar lista de categorias (*com produtos) no catalogo
-    - [x] Implementar vinculo de produtos -> categoria
-    - [x] Adicionar produtos de uma categoria
-    - [x] Remover produtos de uma categoria
-    - [x] Criar uma categoria
-    - [x] Editar categoria
-    - [x] Excluir categoria
-- [ ] Implementar categorias temporárias (ex:pascoa, natal...)
-- [x] Implementar pesquisa dinâmica no painel admin
-- [x] Adicionar eager loading nas consultas
-- [x] Melhorar painel admin
-- [x] Corrigir a exibição das imagens
+-   [x] Implementar testes
+-   [x] Implementar possibilidade de excluir produtos
+-   [x] Adicionar menu responsivo
+-   [x] Integração com a Stripe
+-   [x] Implementar CRUD de categorias
+    -   [x] Criar tabela de categorias
+    -   [x] Adicionar lista de categorias (\*com produtos) no catálogo
+    -   [x] Implementar vínculo de produtos → categoria
+    -   [x] Adicionar produtos de uma categoria
+    -   [x] Remover produtos de uma categoria
+    -   [x] Criar uma categoria
+    -   [x] Editar categoria
+    -   [x] Excluir categoria
+-   [x] Implementar pesquisa dinâmica no painel admin
+-   [x] Adicionar eager loading nas consultas
+-   [x] Melhorar painel admin
+-   [x] Corrigir a exibição das imagens
 
+---
+
+## 🟢 Curto Prazo (antes de produção)
+
+-   [ ] Criar tabela de pedidos
+-   [ ] Armazenar informações do usuário que está realizando a compra
+-   [ ] Criar notificação de pagamento para o admin
+-   [ ] Criar testes para o pagamento
+-   [ ] Criar testes de stress antes de publicar em PRD
+
+---
+
+## 🟡 Médio Prazo (melhorias importantes)
+
+-   [ ] Possibilidade de gerar relatórios
+-   [ ] Importar produtos em massa através de um arquivo CSV ou Excel
+
+---
+
+## 🔵 Longo Prazo (funcionalidades extras)
+
+-   [ ] Implementar categorias temporárias (ex: Páscoa, Natal...)
 
 ## Contribuição
 
 Contribuições são bem-vindas! Sinta-se à vontade para abrir issues ou enviar pull requests.
-
-
-

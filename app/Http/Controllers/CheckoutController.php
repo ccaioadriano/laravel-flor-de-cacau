@@ -2,40 +2,47 @@
 
 namespace App\Http\Controllers;
 
+use App\Services\ProductService;
 use Illuminate\Http\Request;
-use Stripe\StripeClient;
+use Laravel\Cashier\Checkout;
 
 class CheckoutController extends Controller
 {
-    public function checkout(Request $request)
+    public function checkout(Request $request, ProductService $productService)
     {
-        //criar uma config de checkout
-        $stripe = new StripeClient(config('stripe.secret'));
-
         $items = $request->items; // array de itens do carrinho
-
         $lineItems = [];
 
-        foreach ($items as $item) {
-            $lineItems[] = [
-                'price_data' => [
-                    'currency' => 'brl',
-                    'product_data' => [
-                        'name' => $item['title'],
-                        'images' => [$item['image']],
-                    ],
-                    'unit_amount' => intval($item['price'] * 100), // centavos
-                ],
-                'quantity' => $item['quantity'],
-            ];
+        if (empty($items)) {
+            return response()->json(['error' => 'Carrinho vazio'], 400);
         }
 
-        $session = $stripe->checkout->sessions->create([
-            'line_items' => $lineItems,
-           'payment_method_types' => ['card', 'boleto'],
+        foreach ($items as $item) {
+            $product = $productService->getProductById($item['id']);
+            if ($product) {
+                $lineItems[] = [
+                    'price_data' => [
+                        'currency' => 'brl',
+                        'product_data' => [
+                            'name' => $product->title,
+                            'images' => [$product->image ? asset('storage/images/' . $product->image) : asset('img/default.png')],
+                        ],
+                        'unit_amount' => intval($product->price * 100),
+                    ],
+                    'quantity' => $item['quantity'],
+                ];
+            } else {
+                \Log::warning('Produto não encontrado: ' . $item['id']);
+                unset($item);
+            }
+        }
+
+        // Criar a sessão de checkout com Cachier
+        $session = Checkout::guest()->create($lineItems, [
+            'payment_method_types' => ['card', 'boleto'],
             'mode' => 'payment',
             'success_url' => route('checkout-success'),
-            'cancel_url' => route('checkout-cancel'),
+            'cancel_url' => route('home'),
         ]);
 
         return response()->json(['url' => $session->url]);
@@ -43,12 +50,6 @@ class CheckoutController extends Controller
 
     public function success()
     {
-
-        // Salvar informações do pedido no DB 
-        // Manda email de confirmação
-        // Criar um job para enviar a mensagem com o pedido para o administrador
-
         return redirect()->route('home')->with('success', 'Pagamento realizado com sucesso!');
     }
-
 }

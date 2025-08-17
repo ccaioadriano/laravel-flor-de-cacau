@@ -1,10 +1,11 @@
 <?php
 
 use App\Models\Product;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithoutMiddleware;
 
 uses( WithoutMiddleware::class);
+
+uses(\Illuminate\Foundation\Testing\RefreshDatabase::class);
 
 it('cria um produto com sucesso', function () {
     $response = $this->post('/store', [

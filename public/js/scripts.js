@@ -29,7 +29,7 @@ function clearCart() {
 }
 
 // Adicionar ao carrinho
-function addToCart(title, price, image, qtd) {
+function addToCart(id,title, price, image, qtd) {
     qtd = parseInt(qtd);
     const existingItem = cart.find((item) => item.title === title);
 
@@ -37,6 +37,7 @@ function addToCart(title, price, image, qtd) {
         existingItem.quantity += qtd;
     } else {
         cart.push({
+            id: id,
             title: title,
             price: price,
             image: image,
@@ -137,7 +138,6 @@ function checkout() {
         },
         success: function (response) {
             if (response.url) {
-                // Redireciona para o Stripe Checkout
                 window.location.href = response.url;
             } else {
                 alert("Erro ao criar sessão de checkout.");
@@ -200,18 +200,6 @@ function verifyEmptyButton() {
     } else {
         $clearCartButton.empty();
     }
-}
-
-// Funções dos Modais de Edição
-function openEditImageModal(productId) {
-    $(`#imageModal-${productId}`).removeClass("hidden");
-    $("body").css("overflow", "hidden");
-}
-
-function openPriceModal(productId) {
-    $(`#priceModal-${productId}`).removeClass("hidden");
-    $("body").css("overflow", "hidden");
-    Utils.applyMaskMoney(`#price-${productId}`);
 }
 
 function closeModal(modalId) {

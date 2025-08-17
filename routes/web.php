@@ -6,6 +6,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProductController;
 use Illuminate\Support\Facades\Route;
 
+
 Route::get('/', [ProductController::class, 'index'])->name('home');
 Route::get('/sobre', function () {
     return view('pages.about');
@@ -14,8 +15,8 @@ Route::get('/sobre', function () {
 Route::get('/login', [AuthController::class, 'showLoginForm']);
 Route::post('/login', [AuthController::class, 'login'])->name('login');
 
-Route::get('/dashboard',[DashboardController::class, 'index'])->name('dashboard')->middleware('auth');
-Route::get('/create',[ProductController::class, 'create'])->name('create_product')->middleware('auth');
+Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard')->middleware('auth');
+Route::get('/create', [ProductController::class, 'create'])->name('create_product')->middleware('auth');
 Route::get('/dashboard/search', [DashboardController::class, 'search'])->name('dashboard.search')->middleware('auth');
 
 Route::middleware(['auth'])->post('/logout', [AuthController::class, 'logout'])->name('logout');
@@ -28,6 +29,5 @@ Route::middleware(['auth'])->put('unlink-product/{product}', [DashboardControlle
 Route::middleware(['auth'])->put('link-product-to-category/{product}', [DashboardController::class, 'linkProduct'])->name('link_product');
 
 Route::post('/checkout', [CheckoutController::class, 'checkout'])->name('checkout');
- 
+
 Route::get('/checkout/success', [CheckoutController::class, 'success'])->name('checkout-success');
-Route::view('/checkout/cancel', 'checkout.cancel')->name('checkout-cancel');

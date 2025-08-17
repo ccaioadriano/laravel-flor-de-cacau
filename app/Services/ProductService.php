@@ -49,6 +49,11 @@ class ProductService
         }
     }
 
+    public function getProductById($id)
+    {
+        return Product::findOrFail($id);
+    }
+
     public function createProduct(array $data)
     {
         try {
@@ -111,31 +116,6 @@ class ProductService
         }
     }
 
-
-    public function linkProduct($categoryId, $productId)
-    {
-        try {
-            $product = Product::findOrFail($productId);
-            $category = Category::findOrFail($categoryId);
-            $product->update(['category_id' => $category->id]);
-            return true;
-        } catch (\Throwable $e) {
-            \Log::error('Erro ao vincular produto: ' . $e->getMessage());
-            return false;
-        }
-    }
-
-    public function unlinkProduct($id)
-    {
-        try {
-            $product = Product::findOrFail($id);
-            $product->update(['category_id' => null]);
-            return true;
-        } catch (\Exception $e) {
-            \Log::error('Erro ao desvincular produto: ' . $e->getMessage());
-            return false;
-        }
-    }
 
     public function searchProduct($search)
     {

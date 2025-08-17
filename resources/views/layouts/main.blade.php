@@ -101,17 +101,6 @@
                             aria-current="page">Início</a>
                         <a href="{{ route('about') }}"
                             class="block md:inline-block text-white hover:text-gray-200 transition-custom py-2 md:py-0">Sobre</a>
-                        @auth
-                            <a href="{{ route('dashboard') }}"
-                                class="block md:inline-block text-white hover:text-gray-200 transition-custom py-2 md:py-0">Administração</a>
-                            <form method="POST" action="{{ route('logout') }}" class="inline">
-                                @csrf
-                                <button type="submit"
-                                    class="block md:inline-block text-white hover:text-gray-200 transition-custom py-2 md:py-0">
-                                    Sair
-                                </button>
-                            </form>
-                        @endauth
                     </div>
                 </nav>
             </div>
@@ -120,16 +109,6 @@
                 <a href="/" class="block text-white hover:text-gray-200 transition-custom py-2">Início</a>
                 <a href="{{ route('about') }}"
                     class="block text-white hover:text-gray-200 transition-custom py-2">Sobre</a>
-                @auth
-                    <a href="{{ route('dashboard') }}"
-                        class="block md:inline-block text-white hover:text-gray-200 transition-custom py-2 md:py-0">Administração</a>
-                    <form method="POST" action="{{ route('logout') }}" class="block">
-                        @csrf
-                        <button type="submit" class="text-white hover:text-gray-200 transition-custom py-2">
-                            Sair
-                        </button>
-                    </form>
-                @endauth
             </div>
         </div>
     </header>
@@ -171,7 +150,7 @@
             <div class="text-center mt-8 pt-8 border-t border-gray-700">
                 <p class="flex justify-center items-center gap-4">
                     <span>&copy; <time datetime="2025">2025</time> Flor de Cacau. Todos os direitos reservados.</span>
-                    <a href="/login"
+                    <a href="/admin/login" target="_blank"
                         class="text-gray-400 hover:text-white text-sm transition-custom flex items-center gap-1">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24"
                             stroke="currentColor">
