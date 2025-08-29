@@ -10,14 +10,10 @@ Route::get('/sobre', function () {
     return view('pages.about');
 })->name('about');
 
-Route::get('/login', [AuthController::class, 'showLoginForm']);
-Route::post('/login', [AuthController::class, 'login'])->name('login');
 
 Route::get('/dashboard',[DashboardController::class, 'index'])->name('dashboard')->middleware('auth');
 Route::get('/create',[ProductController::class, 'create'])->name('create_product')->middleware('auth');
 Route::get('/dashboard/search', [DashboardController::class, 'search'])->name('dashboard.search')->middleware('auth');
-
-Route::middleware(['auth'])->post('/logout', [AuthController::class, 'logout'])->name('logout');
 Route::middleware(['auth'])->post('/store', [ProductController::class, 'store'])->name('store_product');
 Route::middleware(['auth'])->put('updateProduct/{product}', [ProductController::class, 'updateProduct'])->name('update_product');
 Route::middleware(['auth'])->put('updateImage/{product}', [ProductController::class, 'updateImage'])->name('update_image');

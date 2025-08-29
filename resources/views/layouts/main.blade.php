@@ -101,17 +101,6 @@
                             aria-current="page">Início</a>
                         <a href="{{ route('about') }}"
                             class="block md:inline-block text-white hover:text-gray-200 transition-custom py-2 md:py-0">Sobre</a>
-                        @auth
-                            <a href="{{ route('dashboard') }}"
-                                class="block md:inline-block text-white hover:text-gray-200 transition-custom py-2 md:py-0">Administração</a>
-                            <form method="POST" action="{{ route('logout') }}" class="inline">
-                                @csrf
-                                <button type="submit"
-                                    class="block md:inline-block text-white hover:text-gray-200 transition-custom py-2 md:py-0">
-                                    Sair
-                                </button>
-                            </form>
-                        @endauth
                     </div>
                 </nav>
             </div>
@@ -120,16 +109,6 @@
                 <a href="/" class="block text-white hover:text-gray-200 transition-custom py-2">Início</a>
                 <a href="{{ route('about') }}"
                     class="block text-white hover:text-gray-200 transition-custom py-2">Sobre</a>
-                @auth
-                    <a href="{{ route('dashboard') }}"
-                        class="block md:inline-block text-white hover:text-gray-200 transition-custom py-2 md:py-0">Administração</a>
-                    <form method="POST" action="{{ route('logout') }}" class="block">
-                        @csrf
-                        <button type="submit" class="text-white hover:text-gray-200 transition-custom py-2">
-                            Sair
-                        </button>
-                    </form>
-                @endauth
             </div>
         </div>
     </header>
