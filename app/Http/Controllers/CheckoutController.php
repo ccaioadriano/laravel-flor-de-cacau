@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Order;
 use App\Services\ProductService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Laravel\Cashier\Checkout;
 
 class CheckoutController extends Controller
@@ -32,7 +34,7 @@ class CheckoutController extends Controller
                     'quantity' => $item['quantity'],
                 ];
             } else {
-                \Log::warning('Produto não encontrado: ' . $item['id']);
+                Log::warning('Produto não encontrado: ' . $item['id']);
                 unset($item);
             }
         }
@@ -43,6 +45,20 @@ class CheckoutController extends Controller
             'mode' => 'payment',
             'success_url' => route('checkout-success'),
             'cancel_url' => route('home'),
+            'metadata' => [
+                'order_number' => strtoupper(uniqid('#')),
+            ]
+        ]);
+
+        //cria o pedido com status 'pending'
+        Order::create([
+            'guest_id' => \Illuminate\Support\Str::uuid(),
+            'order_number' => strtoupper(uniqid('#')),
+            'status' => 'pending',
+            'subtotal' => array_sum(array_map(fn($item) => $item['price_data']['unit_amount'] * $item['quantity'], $lineItems)),
+            'total' => array_sum(array_map(fn($item) => $item['price_data']['unit_amount'] * $item['quantity'], $lineItems)), // aqui ainda sem descontos/frete
+            'details' => $items,
+            'stripe_payment_id' => $session->id, // importante!
         ]);
 
         return response()->json(['url' => $session->url]);

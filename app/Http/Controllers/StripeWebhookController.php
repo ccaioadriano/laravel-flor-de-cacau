@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Order;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 
@@ -12,13 +13,15 @@ class StripeWebhookController extends Controller
 
     public function handlePaymentSuccess(Request $request)
     {
-        // Aqui você pode processar o webhook do Stripe
-        // Por exemplo, verificar o tipo de evento e tomar ações apropriadas
-
-        Log::info('Stripe Webhook Received', [
-            'event' => $request->all(),
-        ]);
-        
+        try {
+            Order::where('stripe_payment_id', $request->data['object']['id'])->update([
+                'status' => 'paid',
+                'paid_at' => now(),
+            ]);
+        } catch (\Throwable $th) {
+            Log::error('Error updating order status: ' . $th->getMessage());
+            return response()->json(['status' => 'error', 'message' => 'Failed to update order status'], 500);
+        }
 
         return response()->json(['status' => 'success']);
     }
