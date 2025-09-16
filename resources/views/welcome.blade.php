@@ -114,73 +114,12 @@
                         </div>
 
                         <button
-                            onclick="addToCart('{{ $product->title }}', {{ $product->price}}, '{{ $product->image ? asset('storage/images/' . $product->image) : asset('img/default.png') }}', document.getElementById('qty-{{ $product->id }}').value)"
+                            onclick="addToCart('{{ $product->title }}', {{ $product->price}}, '{{ $product->image ? asset('storage/' . $product->image) : asset('img/default.png') }}', document.getElementById('qty-{{ $product->id }}').value)"
                             class="mt-2 bg-[#143151] text-white px-4 py-2 rounded-md hover:bg-[#0c1f33] transition-all duration-300 w-full">
                             Adicionar ao carrinho
                         </button>
                     </div>
                 </article>
-                <!-- Modal de Edição de Imagem -->
-                <div id="imageModal-{{ $product->id }}" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50">
-                    <div class="flex items-center justify-center min-h-screen px-4">
-                        <div class="bg-white rounded-lg shadow-xl max-w-md w-full">
-                            <div class="p-6">
-                                <h3 class="text-lg font-semibold text-[#143151] mb-4">Alterar Imagem</h3>
-                                <form action="{{ route('update_image', [$product->id]) }}" method="POST"
-                                    enctype="multipart/form-data">
-                                    @csrf
-                                    @method('PUT')
-                                    <div class="mb-4">
-                                        <label class="block text-sm font-medium text-gray-700 mb-2">Nova Imagem</label>
-                                        <input type="file" name="image" accept="image/*" required
-                                            class="w-full border border-gray-300 rounded px-3 py-2">
-                                    </div>
-                                    <div class="flex justify-end gap-2">
-                                        <button type="button" onclick="closeModal('imageModal-{{ $product->id }}')"
-                                            class="px-4 py-2 bg-gray-200 rounded hover:bg-gray-300">
-                                            Cancelar
-                                        </button>
-                                        <button type="submit"
-                                            class="px-4 py-2 bg-[#143151] text-white rounded hover:bg-[#0c1f33]">
-                                            Salvar
-                                        </button>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Modal de Edição de Preço -->
-                <div id="priceModal-{{ $product->id }}" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50">
-                    <div class="flex items-center justify-center min-h-screen px-4">
-                        <div class="bg-white rounded-lg shadow-xl max-w-md w-full">
-                            <div class="p-6">
-                                <h3 class="text-lg font-semibold text-[#143151] mb-4">Alterar Preço</h3>
-                                <form action="{{ route('update_price', [$product->id]) }}" method="POST">
-                                    @csrf
-                                    @method('PUT')
-                                    <div class="mb-4">
-                                        <label class="block text-sm font-medium text-gray-700 mb-2">Novo Preço (R$)</label>
-                                        <input name="price" id="price-{{ $product->id }}" value="{{ $product->price}}" required
-                                            class="w-full border border-gray-300 rounded px-3 py-2">
-                                    </div>
-                                    <div class="flex justify-end gap-2">
-                                        <button type="button" onclick="closeModal('priceModal-{{ $product->id }}')"
-                                            class="px-4 py-2 bg-gray-200 rounded hover:bg-gray-300">
-                                            Cancelar
-                                        </button>
-                                        <button type="submit"
-                                            class="px-4 py-2 bg-[#143151] text-white rounded hover:bg-[#0c1f33]">
-                                            Salvar
-                                        </button>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
             @empty
                 <p class="text-gray-500">Nenhum produto encontrado.</p>
             @endforelse
