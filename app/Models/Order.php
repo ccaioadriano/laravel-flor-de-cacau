@@ -11,17 +11,19 @@ class Order extends Model
 
     protected $fillable = [
         'user_id',
+        'guest_id',
+        'stripe_session_id',
+        'stripe_payment_id',
         'order_number',
         'payment_method',
-        'stripe_payment_id',
         'status',
         'subtotal',
         'discount',
         'shipping_cost',
-        'tax',
         'total',
         'details',
         'paid_at',
+        'is_payment_processed'
     ];
 
     protected $casts = [
@@ -45,5 +47,10 @@ class Order extends Model
     public function scopePending($query)
     {
         return $query->where('status', 'pending');
+    }
+
+    public function scopeOpen($query)
+    {
+        return $query->where('status', 'open');
     }
 }

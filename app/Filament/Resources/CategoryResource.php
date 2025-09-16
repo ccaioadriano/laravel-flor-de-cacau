@@ -35,7 +35,8 @@ class CategoryResource extends Resource
                     ->reactive()
                     ->afterStateUpdated(function ($state, callable $set) {
                         $set('slug', \Illuminate\Support\Str::slug($state));
-                    }),
+                    })
+                    ->debounce(500),
                 Forms\Components\TextInput::make('slug')
                     ->required()
                     ->maxLength(255)

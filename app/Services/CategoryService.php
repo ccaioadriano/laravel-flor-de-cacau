@@ -8,8 +8,7 @@ class CategoryService
 {
     public function getCategories()
     {
-        return Category::with('products')
-            ->select(['id', 'name', 'slug'])
+        return Category::query()->select(['id', 'name', 'slug'])
             ->get();
     }
 }

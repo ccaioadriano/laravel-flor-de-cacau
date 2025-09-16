@@ -13,10 +13,11 @@ return new class extends Migration {
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('user_id')->nullable();
-            $table->uuid('guest_id')->nullable();
+            $table->string('guest_id')->nullable();
+            $table->string('stripe_session_id')->nullable();
+            $table->string('stripe_payment_id')->nullable();
             $table->string('order_number')->unique();
             $table->string('payment_method')->nullable();
-            $table->string('stripe_payment_id')->nullable();
             $table->string('status')->default('pending');
             $table->integer('subtotal')->default(0);
             $table->integer('discount')->default(0);

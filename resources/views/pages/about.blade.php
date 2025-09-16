@@ -129,21 +129,5 @@
 @endsection
 
 @push('script')
-
     <script src="{{ asset('js/utils.js') }}" defer></script>
-    <!-- Microdata estruturado adicional -->
-    <script type="application/ld+json">
-        {
-            "@context": "https://schema.org",
-            "@type": "FAQPage",
-            "mainEntity": [{
-                "@type": "Question",
-                "name": "O que é a Flor de Cacau?",
-                "acceptedAnswer": {
-                    "@type": "Answer",
-                    "text": "A Flor de Cacau é uma confeitaria artesanal especializada em doces especiais, localizada em Belo Horizonte. Nosso foco é criar experiências únicas através de receitas exclusivas e ingredientes selecionados."
-                }
-            }]
-        }
-        </script>
 @endpush

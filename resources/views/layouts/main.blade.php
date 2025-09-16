@@ -73,6 +73,7 @@
         }
     </style>
     @stack('css')
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
 <body class="bg-gray-50 h-screen flex flex-col">

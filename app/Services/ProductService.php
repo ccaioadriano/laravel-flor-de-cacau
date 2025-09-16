@@ -36,14 +36,14 @@ class ProductService
             }
 
             // Para 'all', usa cache com paginação direta
-            return Product::select(['id', 'title', 'description', 'price', 'image'])
+            return Product::query()->select(['id', 'title', 'description', 'price', 'image'])
                 ->latest()
                 ->paginate(self::PER_PAGE);
 
         } catch (\Exception $e) {
             \Log::error('Erro ao buscar produtos: ' . $e->getMessage());
 
-            return Product::select(['id', 'title', 'description', 'price', 'image'])
+            return Product::query()->select(['id', 'title', 'description', 'price', 'image'])
                 ->latest()
                 ->paginate(self::PER_PAGE);
         }

@@ -6,6 +6,7 @@ use App\Models\Order;
 use App\Services\ProductService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Str;
 use Laravel\Cashier\Checkout;
 
 class CheckoutController extends Controller
@@ -39,33 +40,37 @@ class CheckoutController extends Controller
             }
         }
 
-        // Criar a sessão de checkout com Cachier
+        $order = new Order();
+        $order->guest_id = Str::uuid();
+        $order->order_number = uniqid('order_');
+
+
+        // Criar a sessão de checkout
         $session = Checkout::guest()->create($lineItems, [
             'payment_method_types' => ['card', 'boleto'],
             'mode' => 'payment',
-            'success_url' => route('checkout-success'),
+            'success_url' => route('checkout-success') . '?order_number=' . $order->order_number,
             'cancel_url' => route('home'),
-            'metadata' => [
-                'order_number' => strtoupper(uniqid('#')),
-            ]
         ]);
 
-        //cria o pedido com status 'pending'
-        Order::create([
-            'guest_id' => \Illuminate\Support\Str::uuid(),
-            'order_number' => strtoupper(uniqid('#')),
-            'status' => 'pending',
-            'subtotal' => array_sum(array_map(fn($item) => $item['price_data']['unit_amount'] * $item['quantity'], $lineItems)),
-            'total' => array_sum(array_map(fn($item) => $item['price_data']['unit_amount'] * $item['quantity'], $lineItems)), // aqui ainda sem descontos/frete
-            'details' => $items,
-            'stripe_payment_id' => $session->id, // importante!
-        ]);
+        $order->stripe_session_id = $session->id;
+        $order->stripe_payment_id = $session->payment_intent ?? null;
+        $order->status = 'pending';
+        $order->subtotal = array_sum(array_map(fn($item) => $item['price_data']['unit_amount'] * $item['quantity'], $lineItems));
+        $order->total = array_sum(array_map(fn($item) => $item['price_data']['unit_amount'] * $item['quantity'], $lineItems));
+        $order->details = $items;
+
+        $order->save();
 
         return response()->json(['url' => $session->url]);
     }
 
-    public function success()
+    public function success(Request $request)
     {
-        return redirect()->route('home')->with('success', 'Pagamento realizado com sucesso!');
+        $orderNumber = $request->get('order_number');
+
+        $order = Order::where('order_number', $orderNumber)->first();
+
+        return view('pages.checkout.feedback', compact('order'));
     }
 }

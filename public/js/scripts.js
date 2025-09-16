@@ -138,6 +138,7 @@ function checkout() {
         },
         success: function (response) {
             if (response.url) {
+                localStorage.setItem("cart", JSON.stringify([]));
                 window.location.href = response.url;
             } else {
                 alert("Erro ao criar sessão de checkout.");
